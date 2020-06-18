@@ -24,7 +24,7 @@ public class Game implements Disposable {
     public Game(OrthographicCamera camera){
         /* set field */
         field = new Field(500,500, camera);
-        field.setMainPlayer(p = new Player(new Vector2(250,250)));
+        field.setMainPlayer(p = new Player(new Vector2(10,470)));
         p.setField(field);
         field.addMob(p);
         for(int i=0;i<10;i++) field.addMob(new Slime(new Vector2(100,100),p).setField(field));
@@ -51,10 +51,22 @@ public class Game implements Disposable {
     public void update(){
 
         field.update();
+        handleCameraPosition();
 
-        //handle camera position
+    }
+
+    private void handleCameraPosition(){
         if(inputHandler.getScreenMover().isCameraFollow()){
-            CameraStyles.lerpToTarget(camera,getField().getMainPlayer().getCenterPosition().scl(Block.BLOCKWIDTH,Block.BLOCKHEIGHT));
+            float startX = camera.viewportWidth/2;
+            float startY = camera.viewportHeight/2;
+            float width = field.getCols()*Block.BLOCKWIDTH-camera.viewportWidth;
+            float height = field.getRows()*Block.BLOCKHEIGHT-camera.viewportHeight;
+
+            //to make camera movement smooth when the player is near the edge of the map because of boundry.
+
+            Vector2 pos = CameraStyles.boundry(getField().getMainPlayer().getCenterPosition().scl(Block.BLOCKWIDTH,Block.BLOCKHEIGHT),startX,startY,width,height);
+            CameraStyles.lerpToTarget(camera.position,pos);
+            CameraStyles.boundry(camera.position,startX, startY,width,height);
         }
     }
 
