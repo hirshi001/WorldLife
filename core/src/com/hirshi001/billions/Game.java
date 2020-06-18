@@ -5,7 +5,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
+import com.hirshi001.billions.camera.CameraStyles;
 import com.hirshi001.billions.gamepieces.entities.Player;
 import com.hirshi001.billions.gamepieces.entities.Slime;
 import com.hirshi001.billions.inputhandlers.InputHandler;
@@ -47,11 +49,13 @@ public class Game implements Disposable {
     }
 
     public void update(){
-        if(inputHandler.getScreenMover().isCameraFollow()){
-            camera.position.x = field.getMainPlayer().getCenterPosition().x* Block.BLOCKWIDTH;
-            camera.position.y = field.getMainPlayer().getCenterPosition().y*Block.BLOCKHEIGHT;
-        }
+
         field.update();
+
+        //handle camera position
+        if(inputHandler.getScreenMover().isCameraFollow()){
+            CameraStyles.lerpToTarget(camera,getField().getMainPlayer().getCenterPosition().scl(Block.BLOCKWIDTH,Block.BLOCKHEIGHT));
+        }
     }
 
     @Override
