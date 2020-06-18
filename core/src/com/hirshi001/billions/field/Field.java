@@ -1,4 +1,4 @@
-package com.hirshi001.billions;
+package com.hirshi001.billions.field;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -6,17 +6,18 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
+import com.hirshi001.billions.util.camera.CameraStyles;
 import com.hirshi001.billions.gamepieces.PositionComparator;
 import com.hirshi001.billions.gamepieces.Positionable;
 import com.hirshi001.billions.gamepieces.entities.BoxEntity;
 import com.hirshi001.billions.registry.Block;
 import com.hirshi001.billions.registry.Registry;
 import com.hirshi001.billions.gamepieces.structures.Structure;
+import com.hirshi001.billions.util.tiles.TileIter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -54,7 +55,7 @@ public class Field implements Disposable {
         int i, j;
         for(i=0;i<rows;i++){
             for(j=0;j<cols;j++){
-                if(i==0 || j==0 || i==rows-1 || j == cols-1 || Math.random()>0.90)tiles[i][j] = 1;
+                if(i==0 || j==0 || i==rows-1 || j == cols-1 || Math.random()>0.95)tiles[i][j] = 1;
                 else tiles[i][j] = 0;
             }
         }
@@ -87,7 +88,13 @@ public class Field implements Disposable {
         return false;
     }
 
+
+
     public void update(){
+        updateEntities();
+    }
+
+    private void updateEntities(){
         for(BoxEntity m:mobs){
             m.updateBoxEntity();
         }
@@ -175,7 +182,6 @@ public class Field implements Disposable {
         else{
             bubbleSort(positionables, positionComparator);
         }
-
     }
 
     private <T> void bubbleSort(ArrayList<T> e, Comparator<? super T> c){
@@ -226,27 +232,19 @@ public class Field implements Disposable {
     }
 
     public void draw(SpriteBatch batch){
-        Vector3 topLeft = new Vector3(0,0,0), bottomRight = new Vector3(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),0);
-        camera.unproject(topLeft);
-        camera.unproject(bottomRight);
+        Vector3 bottomLeft = new Vector3(0, Gdx.graphics.getHeight(),0), topRight = new Vector3(Gdx.graphics.getWidth(),0,0);
+        camera.unproject(bottomLeft).scl(1f/Block.BLOCKWIDTH,1f/Block.BLOCKHEIGHT,1);
+        camera.unproject(topRight).scl(1f/Block.BLOCKWIDTH,1f/Block.BLOCKHEIGHT,1);
 
-        topLeft.scl(1f/Block.BLOCKWIDTH,1f/Block.BLOCKHEIGHT,1);
-        if(topLeft.x<0) topLeft.x=0;
-        if(topLeft.y<0) topLeft.y=0;
-        if(topLeft.x>cols-1) topLeft.x=cols-1;
-        if(topLeft.y>rows-1) topLeft.y=rows-1;
-        bottomRight.scl(1f/Block.BLOCKWIDTH,1f/Block.BLOCKHEIGHT,1);
-        if(bottomRight.x<0) bottomRight.x=0;
-        if(bottomRight.y<0) bottomRight.y=0;
-        if(bottomRight.x>cols-1) bottomRight.x=cols-1;
-        if(bottomRight.y>rows-1) bottomRight.y=rows-1;
-
-        int i, j;
-        for(i=(int)Math.floor(bottomRight.y);i<(int)Math.floor(topLeft.y)+1;i++){
-            for(j=(int)Math.floor(topLeft.x);j<(int)Math.floor(bottomRight.x)+1;j++){
-                batch.draw(Registry.getBlock(tiles[i][j]).getTexture(), Block.BLOCKWIDTH *j, Block.BLOCKHEIGHT*i);
+        //System.exit(-1);
+        TileIter tileIter = TileIter.createTileIterRelativeTo(getTiles(),bottomLeft.x, bottomLeft.y, topRight.x, topRight.y);
+        int[][] newTiles = tileIter.tiles;
+        for(int i=0;i<newTiles.length;i++){
+            for(int j=0;j<newTiles[i].length;j++){
+                batch.draw(Registry.getBlock(newTiles[i][j]).getTexture(),(j+tileIter.startX)*Block.BLOCKWIDTH, (i+tileIter.startY)*Block.BLOCKHEIGHT);
             }
         }
+
 
         for(Positionable p:positionables){
             p.draw(batch);

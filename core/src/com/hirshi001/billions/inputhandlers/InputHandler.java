@@ -2,7 +2,7 @@ package com.hirshi001.billions.inputhandlers;
 
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.hirshi001.billions.Field;
+import com.hirshi001.billions.field.Field;
 
 public class InputHandler extends InputMultiplexer {
 

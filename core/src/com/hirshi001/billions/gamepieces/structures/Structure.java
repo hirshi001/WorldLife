@@ -1,8 +1,7 @@
 package com.hirshi001.billions.gamepieces.structures;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.hirshi001.billions.Field;
+import com.hirshi001.billions.field.Field;
 import com.hirshi001.billions.gamepieces.Positionable;
 
 public abstract class Structure implements Positionable {

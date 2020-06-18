@@ -1,18 +1,17 @@
 package com.hirshi001.billions;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
-import com.hirshi001.billions.camera.CameraStyles;
+import com.hirshi001.billions.field.Field;
 import com.hirshi001.billions.gamepieces.entities.Player;
 import com.hirshi001.billions.gamepieces.entities.Slime;
 import com.hirshi001.billions.inputhandlers.InputHandler;
 import com.hirshi001.billions.gamepieces.structures.House;
 import com.hirshi001.billions.registry.Block;
+import com.hirshi001.billions.util.camera.CameraStyles;
 
 public class Game implements Disposable {
 
@@ -59,13 +58,13 @@ public class Game implements Disposable {
         if(inputHandler.getScreenMover().isCameraFollow()){
             float startX = camera.viewportWidth/2;
             float startY = camera.viewportHeight/2;
-            float width = field.getCols()*Block.BLOCKWIDTH-camera.viewportWidth;
-            float height = field.getRows()*Block.BLOCKHEIGHT-camera.viewportHeight;
+            float width = getField().getCols()*Block.BLOCKWIDTH-camera.viewportWidth;
+            float height = getField().getRows()*Block.BLOCKHEIGHT-camera.viewportHeight;
 
             //to make camera movement smooth when the player is near the edge of the map because of boundry.
 
             Vector2 pos = CameraStyles.boundry(getField().getMainPlayer().getCenterPosition().scl(Block.BLOCKWIDTH,Block.BLOCKHEIGHT),startX,startY,width,height);
-            CameraStyles.lerpToTarget(camera.position,pos);
+            CameraStyles.lerpToTarget(camera.position,pos,0.1f);
             CameraStyles.boundry(camera.position,startX, startY,width,height);
         }
     }

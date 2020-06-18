@@ -1,11 +1,10 @@
 package com.hirshi001.billions.gamepieces.entities;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.hirshi001.billions.Field;
+import com.hirshi001.billions.field.Field;
 import com.hirshi001.billions.gamepieces.Positionable;
 import com.hirshi001.billions.registry.Registry;
+import com.hirshi001.billions.util.tiles.TileIter;
 
 import java.util.List;
 import java.util.Random;
@@ -21,6 +20,7 @@ public abstract class BoxEntity implements Positionable {
     }
 
     public BoxEntity setField(Field f){this.field = f; return this;}
+    public Field getField(){return this.field;}
     public abstract float getWidth();
     public abstract float getHeight();
     public Vector2 getPosition(){return position;}
@@ -37,7 +37,7 @@ public abstract class BoxEntity implements Positionable {
     }
     protected abstract void update();
     public void tileCollision(){
-        int[][] tiles = field.getTiles();
+        int[][] tiles =getField().getTiles();
         Vector2 dir = getPosition().cpy().sub(getLastPosition());
         //System.out.println(dir);
         //check right side of tile
@@ -79,39 +79,31 @@ public abstract class BoxEntity implements Positionable {
                         if (dir.x < 0 && dir.y < 0) {
                             b=getPosition().y-slope*getPosition().x;
                             float intX = (j+1-b)/slope;
-                            if(intX>i+1){
-                                getPosition().x=i+1;
-                            }
-                            else{
-                                getPosition().y=j+1;
-                            }
+
+                            if(intX>i+1) getPosition().x=i+1;
+                            else getPosition().y=j+1;
+
                         }else if (dir.x < 0 && dir.y > 0) {
                             b=getPosition().y-slope*(getPosition().x)+getHeight();
                             float intX = (j-b)/slope;
-                            if(intX>i+1){
-                                getPosition().x=i+1;
-                            }
-                            else{
-                                getPosition().y=j-getHeight();
-                            }
+
+                            if(intX>i+1) getPosition().x=i+1;
+                            else getPosition().y=j-getHeight();
+
                         } else if (dir.x > 0 && dir.y < 0) {
                             b=getPosition().y-slope*(getPosition().x+getWidth());
                             float intX = (j+1-b)/slope;
-                            if(intX<i){
-                                getPosition().x=i-getWidth();
-                            }
-                            else{
-                                getPosition().y=j+1;
-                            }
+
+                            if(intX<i) getPosition().x=i-getWidth();
+                            else getPosition().y=j+1;
+
                         } else if (dir.x > 0 && dir.y > 0) {
                             b=getPosition().y-slope*(getPosition().x+getHeight())+getHeight();
                             float intX = (j-b)/slope;
-                            if(intX<i){
-                                getPosition().x=i-getWidth();
-                            }
-                            else{
-                                getPosition().y=j-getHeight();
-                            }
+
+                            if(intX<i) getPosition().x=i-getWidth();
+                            else getPosition().y=j-getHeight();
+
                         }
                     }
                     else{

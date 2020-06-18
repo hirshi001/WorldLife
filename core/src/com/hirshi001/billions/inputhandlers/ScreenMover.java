@@ -20,7 +20,7 @@ public class ScreenMover extends InputAdapter {
 
     @Override
     public boolean keyDown(int keycode) {
-        if(keycode==Input.Keys.SHIFT_LEFT){
+        if(keycode==Input.Keys.SHIFT_LEFT && !isCameraFollow()){
             handler.getCamera().position.x = handler.getField().getMainPlayer().getCenterPosition().x*Block.BLOCKWIDTH;
             handler.getCamera().position.y = handler.getField().getMainPlayer().getCenterPosition().y*Block.BLOCKHEIGHT;
             return true;
