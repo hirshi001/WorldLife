@@ -7,8 +7,8 @@ You can run it either by double clicking it or through the terminal.
 
 Instruction on how to play:
 
-WASD to move
-R to toggle camera follow
-LeftShift to move camera to player
-Right Click and Drag to move camera around the field
+WASD to move.
+R to toggle camera follow.
+LeftShift to move camera to player.
+Right Click and Drag to move camera around the field.
 
