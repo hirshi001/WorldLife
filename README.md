@@ -13,5 +13,5 @@ R to toggle camera follow.
 <br>
 LeftShift to move camera to player.
 <br>
-Right Click and Drag to move camera around the field.
+Right Click and Drag to move camera around the field. (This automatically turns of camera follow)
 
