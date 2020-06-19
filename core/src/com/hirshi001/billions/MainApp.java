@@ -5,13 +5,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.hirshi001.billions.game.GameApplication;
 import com.hirshi001.billions.registry.Registry;
 
 import java.awt.Dimension;
 
 public class MainApp extends ApplicationAdapter{
 	SpriteBatch batch;
-	Game game;
+	GameApplication gameApplication;
 
 	public static final Dimension size = new Dimension(1200,1000);
 
@@ -27,7 +28,9 @@ public class MainApp extends ApplicationAdapter{
 		batch = new SpriteBatch();
 
 		/*create game*/
-		game = new Game(camera).setSpriteBatch(batch);
+		gameApplication = new GameApplication();
+		gameApplication.setCamera(camera);
+		gameApplication.startup();
 
 
 
@@ -35,7 +38,7 @@ public class MainApp extends ApplicationAdapter{
 
 	@Override
 	public void render () {
-		game.update();
+		gameApplication.update();
 		camera.update();
 
 
@@ -45,14 +48,14 @@ public class MainApp extends ApplicationAdapter{
 		batch.setProjectionMatrix(camera.combined);
 
 		batch.begin();
-		game.draw();
+		gameApplication.draw(batch);
 		batch.end();
 	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
-		game.dispose();
+		gameApplication.dispose();
 		Registry.dispose();
 	}
 

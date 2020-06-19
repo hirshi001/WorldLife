@@ -1,5 +1,7 @@
 package com.hirshi001.billions.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.hirshi001.billions.Game;
 import com.hirshi001.billions.field.Field;
@@ -7,18 +9,16 @@ import com.hirshi001.billions.gamepieces.entities.BoxEntity;
 import com.hirshi001.billions.gamepieces.entities.Player;
 import com.hirshi001.billions.gamepieces.entities.Slime;
 import com.hirshi001.billions.gamepieces.structures.House;
+import com.hirshi001.billions.inputhandlers.InputHandler;
 import com.hirshi001.billions.registry.Registry;
 
-public class GameApplication {
+public class GameApplication extends GameApplicationAdapter{
 
-    private Game game;
     private BoxEntity mainPlayer;
 
-    public GameApplication(Game g){
-        this.game = g;
-    }
-
+    @Override
     public void startup(){
+        setGame(new Game(getCamera()));
         Field field = new Field(500,500, this);
         tiles(field);
         mainPlayer = new Player(new Vector2(20,20));
@@ -27,8 +27,13 @@ public class GameApplication {
 
         for(int i=0;i<5;i++) field.addMob(new Slime(new Vector2((int)(Math.random()*20)+1,(int)(Math.random()*20)+1),mainPlayer).setField(field));
         for(int i=0;i<1000;i++) field.addStructure(new House(new Vector2((int)(Math.random()*450)+10,(int)(Math.random()*450)+10)));
+        getGame().setField(field).setInputHandler(new InputHandler(getCamera(), field));
+        Gdx.input.setInputProcessor(getGame().getInputHandler());
+    }
 
-        getGame().setField(field);
+    @Override
+    public void draw(SpriteBatch batch) {
+        super.draw(batch);
     }
 
     private void tiles(Field f){
@@ -41,6 +46,5 @@ public class GameApplication {
             }
         }
     }
-    public Game getGame(){return game;}
 
 }
