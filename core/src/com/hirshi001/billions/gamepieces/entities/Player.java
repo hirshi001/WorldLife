@@ -14,7 +14,7 @@ import com.hirshi001.billions.util.animation.Animator;
 
 public class Player extends BoxEntity {
 
-    public static final float WIDTH = 16f/ Block.BLOCKWIDTH, HEIGHT = 10f/Block.BLOCKHEIGHT;
+    public static final float WIDTH = 12f/ Block.BLOCKWIDTH, HEIGHT = 12f/Block.BLOCKHEIGHT;
     private static Texture t1, t2;
 
     static{
@@ -48,7 +48,9 @@ public class Player extends BoxEntity {
         if(facingRight != t.isFlipX()){
             t.flip(true, false);
         }
-        batch.draw(t, getPosition().x*Block.BLOCKWIDTH, getPosition().y*Block.BLOCKHEIGHT,t.getRegionWidth()/2f, t.getRegionHeight()/2f, t.getRegionWidth(), t.getRegionHeight(),1f,1f,0f);
+        batch.draw(t, (getPosition().x+getWidth()/2)*Block.BLOCKWIDTH-t.getRegionWidth()/2f, (getPosition().y+getHeight()/2)*Block.BLOCKHEIGHT-t.getRegionHeight()/2f,t.getRegionWidth()/2f, t.getRegionHeight()/2f, t.getRegionWidth(), t.getRegionHeight(),1f,1f,0f);
+        //batch.draw(t, (getPosition().x)*Block.BLOCKWIDTH, getPosition().y+getHeight()/2*Block.BLOCKHEIGHT-t.getRegionHeight()/2f,t.getRegionWidth()/2f, t.getRegionHeight()/2f, t.getRegionWidth(), t.getRegionHeight(),1f,1f,0f);
+
     }
 
     private int count = 0;

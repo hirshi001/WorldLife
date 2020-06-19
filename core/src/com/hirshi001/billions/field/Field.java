@@ -141,7 +141,7 @@ public class Field implements Disposable {
                 int i, j;
                 for(i=0;i<t.length;i++){
                     for(j=0;j<t[i].length;j++){
-                        if(structureTiles[(int)pos.y+i][(int)pos.x+j]!=0 || Registry.getBlock(tiles[(int)pos.y+i][(int)pos.x+j]).isCollidable()){
+                        if(!((int)pos.y+i>=0 && (int)pos.y+i<getRows() && (int)pos.x+j>=0 && (int)pos.x+j<=getCols()) || structureTiles[(int)pos.y+i][(int)pos.x+j]!=0 || Registry.getBlock(tiles[(int)pos.y+i][(int)pos.x+j]).isCollidable()){
                             cont = true;
                             break;
                         }

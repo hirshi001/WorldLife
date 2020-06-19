@@ -63,21 +63,23 @@ public class Slime extends BoxEntity{
 
         float dx = playerPos.x - getCenterPosition().x;
         float dy = playerPos.y - getCenterPosition().y;
-        if(playerPos.dst2(getCenterPosition())<2) return;
-        if(playerPos.dst2(getCenterPosition())>30*30){
-            getPosition().x = playerPos.x;
-            getPosition().y = playerPos.y;
-            return;
+        if(!(playerPos.dst2(getCenterPosition())<4)) {
+            if (playerPos.dst2(getCenterPosition()) > 30 * 30) {
+                getPosition().x = playerPos.x;
+                getPosition().y = playerPos.y;
+            }
+            else {
+                Vector2 mov = new Vector2(dx, dy).nor();
+                getPosition().add(mov.scl(0.202f));
+            }
         }
-        Vector2 mov = new Vector2(dx, dy).nor();
-        getPosition().add(mov.scl(0.202f));
 
         facingRight = getCenterPosition().x<getMaster().getCenterPosition().x;
 
         count++;
         if(count>12){
             cycle.cycle();
-            count = 0;
+            count = -(int)(Math.random()*3);
         }
     }
 

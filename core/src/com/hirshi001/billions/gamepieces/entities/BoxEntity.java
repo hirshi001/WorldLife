@@ -36,7 +36,10 @@ public abstract class BoxEntity implements Positionable {
         update();
     }
     protected abstract void update();
+
+    //Currently does not use TileIter. May change later
     public void tileCollision(){
+
         int[][] tiles =getField().getTiles();
         Vector2 dir = getPosition().cpy().sub(getLastPosition());
         //System.out.println(dir);
@@ -70,6 +73,7 @@ public abstract class BoxEntity implements Positionable {
         }
         float slope, b;
         //System.out.println(startX + " : " + endX + " :: "+startY + " : " + endY + " | dx : "+dx+" - dy : "+ dy);
+
         for(int i=startX;dir.x>0?i<=endX:i>=endX;i+=dx){
             for(int j=startY;dir.y>0?j<=endY:j>=endY;j+=dy){
                 if (Registry.getBlock(tiles[j][i]).isCollidable() || field.getStructureTiles()[j][i]==1) {
@@ -127,6 +131,7 @@ public abstract class BoxEntity implements Positionable {
                 }
             }
         }
+
     }
 
     public void mobCollision(List<BoxEntity> mobs){
@@ -152,16 +157,18 @@ public abstract class BoxEntity implements Positionable {
     }
 
     protected void onMobCollision(BoxEntity e) {
-        int i=0;
+        Random r = new Random();
+        if(e.getCenterPosition().equals(getCenterPosition())){
+            getLastPosition().set(getPosition());
+            getPosition().add( (r.nextBoolean()?-1:1)*0.00001f,(r.nextBoolean()?-1:1)*0.00001f);
+            tileCollision();
+        }
+
         Vector2 mov = new Vector2(e.getCenterPosition().x - getCenterPosition().x, e.getCenterPosition().y-getCenterPosition().y);
         mov.nor().scl(0.01f);
-        Random r = new Random();
+
+        int i=0;
         while (touchingEntity(e)) {
-            if(e.getCenterPosition().equals(getCenterPosition())){
-                getLastPosition().set(getPosition());
-                getPosition().add( (r.nextBoolean()?-1:1)*0.00001f,(r.nextBoolean()?-1:1)*0.00001f);
-                tileCollision();
-            }
             if (i > 20){
                 break;
             }

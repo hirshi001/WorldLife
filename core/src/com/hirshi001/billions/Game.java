@@ -23,10 +23,10 @@ public class Game implements Disposable {
     public Game(OrthographicCamera camera){
         /* set field */
         field = new Field(500,500, camera);
-        field.setMainPlayer(p = new Player(new Vector2(10,470)));
+        field.setMainPlayer(p = new Player(new Vector2(10,10)));
         p.setField(field);
         field.addMob(p);
-        for(int i=0;i<10;i++) field.addMob(new Slime(new Vector2(100,100),p).setField(field));
+        for(int i=0;i<5;i++) field.addMob(new Slime(new Vector2((int)(Math.random()*20)+1,(int)(Math.random()*20)+1),p).setField(field));
         for(int i=0;i<1000;i++) field.addStructure(new House(new Vector2((int)(Math.random()*400)+50,(int)(Math.random()*400)+50)));
         //field.addStructure(new House(new Vector2(0,0)));
         this.camera = camera;
