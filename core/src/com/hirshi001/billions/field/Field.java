@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
+import com.hirshi001.billions.Game;
+import com.hirshi001.billions.game.GameApplication;
 import com.hirshi001.billions.util.camera.CameraStyles;
 import com.hirshi001.billions.gamepieces.PositionComparator;
 import com.hirshi001.billions.gamepieces.Positionable;
@@ -43,20 +45,19 @@ public class Field implements Disposable {
 
 
     private BoxEntity mainPlayer;
-    private OrthographicCamera camera;
+    private GameApplication game;
 
 
-    public Field(int rows, int cols, OrthographicCamera camera){
+    public Field(int rows, int cols, GameApplication game){
         this.rows = rows;
         this.cols = cols;
-        this.camera = camera;
+        this.game = game;
         tiles = new int[rows][cols];
         structureTiles = new int[rows][cols];
         int i, j;
         for(i=0;i<rows;i++){
             for(j=0;j<cols;j++){
-                if(i==0 || j==0 || i==rows-1 || j == cols-1 || Math.random()>0.95)tiles[i][j] = 1;
-                else tiles[i][j] = 0;
+                tiles[i][j] = 0;
             }
         }
     }
@@ -75,8 +76,12 @@ public class Field implements Disposable {
         return cols;
     }
 
-    public OrthographicCamera getCamera(){return camera;}
+    public GameApplication getGameApplication(){return game;}
 
+    public Field setTiles(int[][] tiles){
+        this.tiles = tiles;
+        return this;
+    }
     public int[][] getTiles(){return tiles;}
     public int[][] getStructureTiles(){return structureTiles;}
 
@@ -233,8 +238,8 @@ public class Field implements Disposable {
 
     public void draw(SpriteBatch batch){
         Vector3 bottomLeft = new Vector3(0, Gdx.graphics.getHeight(),0), topRight = new Vector3(Gdx.graphics.getWidth(),0,0);
-        camera.unproject(bottomLeft).scl(1f/Block.BLOCKWIDTH,1f/Block.BLOCKHEIGHT,1);
-        camera.unproject(topRight).scl(1f/Block.BLOCKWIDTH,1f/Block.BLOCKHEIGHT,1);
+        getGameApplication().getGame().getCamera().unproject(bottomLeft).scl(1f/Block.BLOCKWIDTH,1f/Block.BLOCKHEIGHT,1);
+        getGameApplication().getGame().getCamera().unproject(topRight).scl(1f/Block.BLOCKWIDTH,1f/Block.BLOCKHEIGHT,1);
 
         //System.exit(-1);
         TileIter tileIter = TileIter.createTileIterRelativeTo(getTiles(),bottomLeft.x, bottomLeft.y, topRight.x, topRight.y);

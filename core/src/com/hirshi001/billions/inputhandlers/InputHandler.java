@@ -15,7 +15,6 @@ public class InputHandler extends InputMultiplexer {
         this.field = field;
         screenMover = new ScreenMover(this);
         addProcessor(screenMover);
-       // addProcessor();
     }
 
     public OrthographicCamera getCamera(){

@@ -49,7 +49,6 @@ public class Player extends BoxEntity {
             t.flip(true, false);
         }
         batch.draw(t, (getPosition().x+getWidth()/2)*Block.BLOCKWIDTH-t.getRegionWidth()/2f, (getPosition().y+getHeight()/2)*Block.BLOCKHEIGHT-t.getRegionHeight()/2f,t.getRegionWidth()/2f, t.getRegionHeight()/2f, t.getRegionWidth(), t.getRegionHeight(),1f,1f,0f);
-        //batch.draw(t, (getPosition().x)*Block.BLOCKWIDTH, getPosition().y+getHeight()/2*Block.BLOCKHEIGHT-t.getRegionHeight()/2f,t.getRegionWidth()/2f, t.getRegionHeight()/2f, t.getRegionWidth(), t.getRegionHeight(),1f,1f,0f);
 
     }
 
@@ -66,7 +65,7 @@ public class Player extends BoxEntity {
         getPosition().add(mov);
 
         Vector2 centerPos = getCenterPosition();
-        Vector3 screenPos = field.getCamera().project(new Vector3(centerPos.x*Block.BLOCKWIDTH, centerPos.y*Block.BLOCKHEIGHT, 0));
+        Vector3 screenPos = field.getGameApplication().getGame().getCamera().project(new Vector3(centerPos.x*Block.BLOCKWIDTH, centerPos.y*Block.BLOCKHEIGHT, 0));
         facingRight = screenPos.x<Gdx.input.getX();
 
         count++;

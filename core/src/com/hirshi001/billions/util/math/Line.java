@@ -1,4 +1,4 @@
-package com.hirshi001.billions.util;
+package com.hirshi001.billions.util.math;
 
 import com.badlogic.gdx.math.Vector2;
 

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 import com.hirshi001.billions.field.Field;
+import com.hirshi001.billions.game.GameApplication;
 import com.hirshi001.billions.gamepieces.entities.Player;
 import com.hirshi001.billions.gamepieces.entities.Slime;
 import com.hirshi001.billions.inputhandlers.InputHandler;
@@ -19,28 +20,36 @@ public class Game implements Disposable {
     private SpriteBatch spriteBatch;
     private OrthographicCamera camera;
     private InputHandler inputHandler;
-    private Player p;
+
+    private GameApplication application;
+
     public Game(OrthographicCamera camera){
-        /* set field */
-        field = new Field(500,500, camera);
-        field.setMainPlayer(p = new Player(new Vector2(10,10)));
-        p.setField(field);
-        field.addMob(p);
-        for(int i=0;i<5;i++) field.addMob(new Slime(new Vector2((int)(Math.random()*20)+1,(int)(Math.random()*20)+1),p).setField(field));
-        for(int i=0;i<1000;i++) field.addStructure(new House(new Vector2((int)(Math.random()*400)+50,(int)(Math.random()*400)+50)));
-        //field.addStructure(new House(new Vector2(0,0)));
+        application = new GameApplication(this);
+        application.startup();
         this.camera = camera;
         Gdx.input.setInputProcessor(inputHandler = new InputHandler(camera, field));
-        camera.position.x = field.getMainPlayer().getCenterPosition().x* Block.BLOCKWIDTH;
-        camera.position.y = field.getMainPlayer().getCenterPosition().y*Block.BLOCKHEIGHT;
     }
 
     public Game setSpriteBatch(SpriteBatch batch){
         this.spriteBatch = batch;
         return this;
     }
-
+    public SpriteBatch getSpriteBatch(){return this.spriteBatch;}
+    public Game setField(Field f){
+        this.field = f;
+        return this;
+    }
     public Field getField(){return field;}
+    public Game setCamera(OrthographicCamera camera){
+        this.camera = camera;
+        return this;
+    }
+    public OrthographicCamera getCamera(){return this.camera;}
+    public Game setInputHandler(InputHandler handler){
+        this.inputHandler = handler;
+        return this;
+    }
+    public InputHandler getInputHandler(){return this.inputHandler;}
 
 
     public void draw(){
