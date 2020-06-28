@@ -14,6 +14,9 @@ public abstract class BoxGameEntity extends BoxEntity {
 
     protected final Vector2 lastPosition;
 
+    private int lastItemTouchingCheck = 0;
+    private int itemTouchingCheckLim = 20;
+
     public BoxGameEntity(final Vector2 position){
         super(position);
         lastPosition = position.cpy();
@@ -183,6 +186,9 @@ public abstract class BoxGameEntity extends BoxEntity {
     }
 
     public void itemTouching(List<ItemEntity> items){
+        lastItemTouchingCheck++;
+        if(lastItemTouchingCheck<itemTouchingCheckLim) return;
+        lastItemTouchingCheck = 0;
         for(ItemEntity i:items){
             if(touchingEntity(i)){
                 onItemTouching(i);

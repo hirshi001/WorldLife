@@ -124,6 +124,7 @@ public class Field implements Disposable {
         for(BoxGameEntity m:mobs){ m.updateBoxEntity(); }
         for(BoxGameEntity m:mobs){ m.tileCollision(); }
         for(BoxGameEntity m:mobs){ m.mobCollision(mobs); }
+        for(BoxGameEntity m:mobs){ m.itemTouching(items); }
 
     }
 

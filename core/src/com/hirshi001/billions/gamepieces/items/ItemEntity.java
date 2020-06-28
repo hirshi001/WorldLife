@@ -14,15 +14,6 @@ public abstract class ItemEntity extends BoxEntity {
     public abstract void onPicked(BoxGameEntity e);
 
     @Override
-    public float getWidth() {
-        return 0;
-    }
-
-    @Override
-    public float getHeight() {
-        return 0;
-    }
-    @Override
     public void draw(Vector2 bottomLeft, Vector2 topRight, SpriteBatch b){
         if(shouldDraw(bottomLeft, topRight)){
             drawItem(b);

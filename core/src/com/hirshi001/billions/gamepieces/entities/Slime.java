@@ -4,10 +4,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.hirshi001.billions.gamepieces.items.ItemEntity;
 import com.hirshi001.billions.registry.Block;
 import com.hirshi001.billions.registry.Registry;
 import com.hirshi001.billions.util.animation.AnimationCycle;
 import com.hirshi001.billions.util.animation.Animator;
+
+import java.util.List;
 
 public class Slime extends BoxGameEntity {
 
@@ -32,6 +35,12 @@ public class Slime extends BoxGameEntity {
     public Slime(Vector2 position, BoxGameEntity master) {
         super(position);
         this.master = master;
+    }
+
+
+    @Override
+    public void itemTouching(List<ItemEntity> items) {
+        return;
     }
 
     public BoxGameEntity getMaster(){return master;}
