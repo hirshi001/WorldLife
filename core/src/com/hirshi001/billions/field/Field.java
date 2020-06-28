@@ -1,6 +1,7 @@
 package com.hirshi001.billions.field;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -101,19 +102,9 @@ public class Field implements Disposable {
     }
 
     private void updateEntities(){
-        for(BoxGameEntity m:mobs){
-            m.updateBoxEntity();
-        }
-        for(BoxGameEntity m:mobs){
-            m.tileCollision();
-        }
-        for(BoxGameEntity m:mobs){
-            m.mobCollision(mobs);
-        }
-
-        for(Structure s:structures){
-            s.update();
-        }
+        updateMobs();
+        for(Structure s:structures){ s.update(); }
+        for(ItemEntity e:items){ e.updateBoxEntity(); }
 
         int change = 0;
 
@@ -127,6 +118,13 @@ public class Field implements Disposable {
         else{
             bubbleSort(positionables, positionComparator);
         }
+    }
+
+    private void updateMobs(){
+        for(BoxGameEntity m:mobs){ m.updateBoxEntity(); }
+        for(BoxGameEntity m:mobs){ m.tileCollision(); }
+        for(BoxGameEntity m:mobs){ m.mobCollision(mobs); }
+
     }
 
     private int handleMobs(){
@@ -272,10 +270,10 @@ public class Field implements Disposable {
 
     public void draw(SpriteBatch batch){
         Vector3 bottomLeft = new Vector3(0, Gdx.graphics.getHeight(),0), topRight = new Vector3(Gdx.graphics.getWidth(),0,0);
-        getGameApplication().getGame().getCamera().unproject(bottomLeft).scl(1f/Block.BLOCKWIDTH,1f/Block.BLOCKHEIGHT,1);
-        getGameApplication().getGame().getCamera().unproject(topRight).scl(1f/Block.BLOCKWIDTH,1f/Block.BLOCKHEIGHT,1);
+        OrthographicCamera camera = getGameApplication().getGame().getCamera();
+        camera.unproject(bottomLeft).scl(1f/Block.BLOCKWIDTH,1f/Block.BLOCKHEIGHT,1);
+        camera.unproject(topRight).scl(1f/Block.BLOCKWIDTH,1f/Block.BLOCKHEIGHT,1);
 
-        //System.exit(-1);
         TileIter tileIter = TileIter.createTileIterRelativeTo(getTiles(),bottomLeft.x, bottomLeft.y, topRight.x, topRight.y);
         int[][] newTiles = tileIter.tiles;
         for(int i=0;i<newTiles.length;i++){
@@ -289,6 +287,7 @@ public class Field implements Disposable {
             p.draw(bl, tr, batch);
         }
     }
+
 
     @Override
     public void dispose() {

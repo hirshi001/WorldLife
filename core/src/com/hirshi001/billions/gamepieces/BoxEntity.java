@@ -10,12 +10,18 @@ public abstract class BoxEntity implements Positionable {
     protected Vector2 position;
     protected Field field;
 
+    public BoxEntity(Vector2 position){
+        this.position = position;
+    }
+
     @Override
     public Vector2 getLayerPosition() {return position; }
 
     public BoxEntity setField(Field f){this.field = f; return this;}
     public Field getField(){return this.field;}
     public Vector2 getPosition(){return position;}
+
+    public abstract void updateBoxEntity();
 
     public abstract float getWidth();
     public abstract float getHeight();

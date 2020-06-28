@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.hirshi001.billions.field.Field;
 import com.hirshi001.billions.gamepieces.BoxEntity;
+import com.hirshi001.billions.gamepieces.items.ItemEntity;
 import com.hirshi001.billions.registry.Registry;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public abstract class BoxGameEntity extends BoxEntity {
     protected final Vector2 lastPosition;
 
     public BoxGameEntity(final Vector2 position){
-        this.position = position;
+        super(position);
         lastPosition = position.cpy();
     }
 
@@ -28,11 +29,13 @@ public abstract class BoxGameEntity extends BoxEntity {
             drawEntity(batch);
         }
     }
+
     public abstract void drawEntity(SpriteBatch batch);
     public boolean shouldDraw(Vector2 bottomLeft, Vector2 topRight){
         return !(getPosition().x+getWidth()<bottomLeft.x || getPosition().x>topRight.x || getPosition().y+getHeight()<bottomLeft.y || getPosition().y>topRight.y);
     }
 
+    @Override
     public void updateBoxEntity(){
         lastPosition.set(position);
         update();
@@ -142,6 +145,10 @@ public abstract class BoxGameEntity extends BoxEntity {
 
     }
 
+    public boolean touchingEntity(BoxEntity e){
+        return touchingBox(e.getPosition(),e.getWidth(), e.getHeight());
+    }
+
     public void mobCollision(List<BoxGameEntity> mobs){
         for(BoxGameEntity e:mobs){
             if(touchingEntity(e)){
@@ -150,10 +157,6 @@ public abstract class BoxGameEntity extends BoxEntity {
             }
         }
     }
-    public boolean touchingEntity(BoxGameEntity e){
-        return touchingBox(e.getPosition(),e.getWidth(), e.getHeight());
-    }
-
 
     protected void onMobCollision(BoxGameEntity e) {
         Random r = new Random();
@@ -177,6 +180,18 @@ public abstract class BoxGameEntity extends BoxEntity {
             i++;
             tileCollision();
         }
+    }
+
+    public void itemTouching(List<ItemEntity> items){
+        for(ItemEntity i:items){
+            if(touchingEntity(i)){
+                onItemTouching(i);
+            }
+        }
+    }
+
+    public void onItemTouching(ItemEntity i){
+
     }
 
 
