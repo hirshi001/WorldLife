@@ -7,15 +7,18 @@ import com.hirshi001.billions.gamepieces.entities.BoxGameEntity;
 import com.hirshi001.billions.registry.Block;
 import com.hirshi001.billions.registry.Registry;
 
-public class Totem extends ItemEntity {
+public class Sword extends ItemEntity {
 
     public static final Texture t = new Texture("rpg-pack/props_n_decorations/generic-rpg-loot01.png");
+    private float bounceHeight = 0;
+    private float bounceHeightLim = 5;
+    private boolean bouncingUp = true;
 
     static{
         Registry.addDisposable(t);
     }
 
-    public Totem(Vector2 position) {
+    public Sword(Vector2 position) {
         super(position);
     }
 
@@ -41,11 +44,24 @@ public class Totem extends ItemEntity {
 
     @Override
     public void drawItem(SpriteBatch batch) {
-        batch.draw(t,getPosition().x* Block.BLOCKWIDTH, getPosition().y*Block.BLOCKHEIGHT);
+
+        batch.draw(t,getPosition().x* Block.BLOCKWIDTH, getPosition().y*Block.BLOCKHEIGHT+bounceHeight);
     }
 
     @Override
     public void updateBoxEntity() {
-
+        float d = (float)Math.random()/10;
+        if(bouncingUp){
+            bounceHeight+=0.2+d;
+            if(bounceHeight>=bounceHeightLim){
+                bouncingUp=false;
+            }
+        }
+        else{
+            bounceHeight-=0.2+d;
+            if(bounceHeight<=0){
+                bouncingUp=true;
+            }
+        }
     }
 }
