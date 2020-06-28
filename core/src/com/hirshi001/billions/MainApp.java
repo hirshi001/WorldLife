@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.hirshi001.billions.game.GameApplication;
 import com.hirshi001.billions.registry.Registry;
 
+import javax.swing.JFrame;
 import java.awt.Dimension;
 
 public class MainApp extends ApplicationAdapter{
@@ -34,6 +35,12 @@ public class MainApp extends ApplicationAdapter{
 
 
 
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		camera.viewportWidth = width;
+		camera.viewportHeight = height;
 	}
 
 	@Override

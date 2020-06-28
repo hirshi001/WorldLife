@@ -1,11 +1,13 @@
 package com.hirshi001.billions.gamepieces.entities;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.hirshi001.billions.field.Field;
 import com.hirshi001.billions.gamepieces.Positionable;
 import com.hirshi001.billions.registry.Registry;
 import com.hirshi001.billions.util.tiles.TileIter;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -31,6 +33,18 @@ public abstract class BoxEntity implements Positionable {
     public Vector2 getLastPosition(){return lastPosition;}
     public Vector2 getCenterPosition(){return getPosition().cpy().add(getWidth()/2f, getHeight()/2f);}
     public Vector2 getCenterPosition(Vector2 v){return v.cpy().add(getWidth()/2f, getHeight()/2f);}
+
+    @Override
+    public void draw(Vector2 bottomLeft, Vector2 topRight, SpriteBatch batch) {
+        if(shouldDraw(bottomLeft, topRight)){
+            drawEntity(batch);
+        }
+    }
+    public abstract void drawEntity(SpriteBatch batch);
+    public boolean shouldDraw(Vector2 bottomLeft, Vector2 topRight){
+        return !(getPosition().x+getWidth()<bottomLeft.x || getPosition().x>topRight.x || getPosition().y+getHeight()<bottomLeft.y || getPosition().y>topRight.y);
+    }
+
     public void updateBoxEntity(){
         lastPosition.set(position);
         update();

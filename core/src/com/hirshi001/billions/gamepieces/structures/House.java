@@ -26,7 +26,7 @@ public class House extends Structure {
     }
 
     @Override
-    public void draw(SpriteBatch batch) {
+    public void drawStructure(SpriteBatch batch) {
         batch.draw(t,getPosition().x* Block.BLOCKWIDTH-3, (getPosition().y+1)*Block.BLOCKHEIGHT);
     }
 
@@ -45,4 +45,13 @@ public class House extends Structure {
         return tiles;
     }
 
+    @Override
+    public float getWidth() {
+        return (float)t.getWidth()/Block.BLOCKWIDTH;
+    }
+
+    @Override
+    public float getHeight() {
+        return (float)t.getHeight()/Block.BLOCKHEIGHT;
+    }
 }

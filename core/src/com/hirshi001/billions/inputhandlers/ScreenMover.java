@@ -4,8 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.hirshi001.billions.registry.Block;
+import com.hirshi001.billions.util.camera.CameraStyles;
 
 public class ScreenMover extends InputAdapter {
 
@@ -23,7 +23,6 @@ public class ScreenMover extends InputAdapter {
         if(keycode==Input.Keys.SHIFT_LEFT && !isCameraFollow()){
             handler.getCamera().position.x = handler.getField().getMainPlayer().getCenterPosition().x*Block.BLOCKWIDTH;
             handler.getCamera().position.y = handler.getField().getMainPlayer().getCenterPosition().y*Block.BLOCKHEIGHT;
-            return true;
         }
         if(keycode==Input.Keys.R){
             cameraFollow = !cameraFollow;

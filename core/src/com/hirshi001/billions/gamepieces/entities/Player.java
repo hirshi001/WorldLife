@@ -43,7 +43,7 @@ public class Player extends BoxEntity {
     }
 
     @Override
-    public void draw(SpriteBatch batch) {
+    public void drawEntity(SpriteBatch batch) {
         TextureRegion t = cycle.get();
         if(facingRight != t.isFlipX()){
             t.flip(true, false);

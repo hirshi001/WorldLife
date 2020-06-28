@@ -250,9 +250,9 @@ public class Field implements Disposable {
             }
         }
 
-
+        Vector2 bl = new Vector2(bottomLeft.x, bottomLeft.y).sub(1,1), tr = new Vector2(topRight.x, topRight.y).add(1,1);
         for(Positionable p:positionables){
-            p.draw(batch);
+            p.draw(bl, tr, batch);
         }
     }
 

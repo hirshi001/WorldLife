@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.hirshi001.billions.registry.Block;
 import com.hirshi001.billions.registry.Registry;
 import com.hirshi001.billions.util.animation.AnimationCycle;
@@ -47,7 +48,7 @@ public class Slime extends BoxEntity{
     }
 
     @Override
-    public void draw(SpriteBatch batch) {
+    public void drawEntity(SpriteBatch batch) {
         TextureRegion t = cycle.get();
         if(facingRight != t.isFlipX()){
             t.flip(true, false);

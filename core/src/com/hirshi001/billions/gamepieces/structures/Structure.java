@@ -1,5 +1,6 @@
 package com.hirshi001.billions.gamepieces.structures;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.hirshi001.billions.field.Field;
 import com.hirshi001.billions.gamepieces.Positionable;
@@ -16,6 +17,23 @@ public abstract class Structure implements Positionable {
     public abstract void update();
     public Vector2 getPosition(){return position;}
     public abstract int[][] getTiles();
+
+    /** @return the width of the texture drawn relative to the block scale. */
+    public abstract float getWidth();
+    /** @return the height of the texture drawn relative to the block scale. */
+    public abstract float getHeight();
+
+    @Override
+    public void draw(Vector2 bottomLeft, Vector2 topRight, SpriteBatch batch) {
+        if(shouldDraw(bottomLeft, topRight)){
+            drawStructure(batch);
+        }
+    }
+    public boolean shouldDraw(Vector2 bottomLeft, Vector2 topRight){
+        float width = getWidth(), height = getHeight();
+        return !(getPosition().x+width<bottomLeft.x || getPosition().x>topRight.x || getPosition().y+height<bottomLeft.y || getPosition().y>topRight.y);
+    }
+    public abstract void drawStructure(SpriteBatch batch);
 
     public static int[][] vFlip(int[][] tiles){
         int[][] newT = new int[tiles.length][longestRow(tiles)];

@@ -19,14 +19,14 @@ public class GameApplication extends GameApplicationAdapter{
     @Override
     public void startup(){
         setGame(new Game(getCamera()));
-        Field field = new Field(500,500, this);
+        Field field = new Field(200,200, this);
         tiles(field);
-        mainPlayer = new Player(new Vector2(20,20));
+        mainPlayer = new Player(new Vector2(100,100));
         field.setMainPlayer(mainPlayer);
         field.addMob(mainPlayer);
 
-        for(int i=0;i<5;i++) field.addMob(new Slime(new Vector2((int)(Math.random()*20)+1,(int)(Math.random()*20)+1),mainPlayer).setField(field));
-        for(int i=0;i<1000;i++) field.addStructure(new House(new Vector2((int)(Math.random()*450)+10,(int)(Math.random()*450)+10)));
+        for(int i=0;i<5;i++) field.addMob(new Slime(mainPlayer.getCenterPosition().cpy().add((int)(Math.random()*10)-5,(int)(Math.random()*10)+-5),mainPlayer).setField(field));
+        for(int i=0;i<1000;i++) field.addStructure(new House(new Vector2((int)(Math.random()*(field.getCols()-3)),(int)(Math.random()*(field.getRows()-3)))));
         getGame().setField(field).setInputHandler(new InputHandler(getCamera(), field));
         Gdx.input.setInputProcessor(getGame().getInputHandler());
     }
@@ -41,7 +41,8 @@ public class GameApplication extends GameApplicationAdapter{
         int row, col;
         for(row=0;row<tiles.length;row++){
             for(col=0;col<tiles[row].length;col++){
-                if(Math.random()>0.95) tiles[row][col] = Registry.WALL.getId();
+                if(row==0 || row==tiles.length-1 || col == 0 || col==tiles[row].length-1) tiles[row][col] = Registry.WALL.getId();
+                else if(Math.random()>0.95) tiles[row][col] = Registry.WALL.getId();
                 else tiles[row][col] = Registry.GRASS.getId();
             }
         }
