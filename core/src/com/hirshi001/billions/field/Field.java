@@ -11,6 +11,7 @@ import com.hirshi001.billions.gamepieces.PositionComparator;
 import com.hirshi001.billions.gamepieces.Positionable;
 import com.hirshi001.billions.gamepieces.entities.BoxGameEntity;
 import com.hirshi001.billions.gamepieces.items.ItemEntity;
+import com.hirshi001.billions.gamepieces.projecticles.GameProjectile;
 import com.hirshi001.billions.registry.Block;
 import com.hirshi001.billions.registry.Registry;
 import com.hirshi001.billions.gamepieces.structures.Structure;
@@ -32,6 +33,11 @@ public class Field implements Disposable {
     private final List<BoxGameEntity> mobs = new LinkedList<>();
     private final Queue<BoxGameEntity> mobsRemove = new LinkedList<>();
     private final Queue<BoxGameEntity> mobsAdd = new LinkedList<>();
+
+    private final List<GameProjectile> projectiles = new LinkedList<>();
+    private final Queue<GameProjectile> projectilesRemove = new LinkedList<>();
+    private final Queue<GameProjectile> projectilesAdd = new LinkedList<>();
+
 
     private final List<ItemEntity> items = new LinkedList<>();
     private final Queue<ItemEntity> itemsRemove = new LinkedList<>();
@@ -103,12 +109,15 @@ public class Field implements Disposable {
 
     private void updateEntities(){
         updateMobs();
+        updateProjectiles();
         for(Structure s:structures){ s.update(); }
         for(ItemEntity e:items){ e.updateBoxEntity(); }
+
 
         int change = 0;
 
         change+=handleMobs();
+        change+=handleProjectiles();
         change+=handleItems();
         change+=handleStructures();
 
@@ -125,7 +134,10 @@ public class Field implements Disposable {
         for(BoxGameEntity m:mobs){ m.tileCollision(); }
         for(BoxGameEntity m:mobs){ m.mobCollision(mobs); }
         for(BoxGameEntity m:mobs){ m.itemTouching(items); }
-
+    }
+    private void updateProjectiles(){
+        for(GameProjectile p:projectiles){p.updateBoxEntity();}
+        for(GameProjectile p:projectiles){p.touchingMob(mobs);}
     }
 
     private int handleMobs(){
@@ -144,6 +156,25 @@ public class Field implements Disposable {
             e = mobsRemove.remove();
             mobs.remove(e);
             positionables.remove(e);
+        }
+        return change;
+    }
+    private int handleProjectiles(){
+        int change = 0;
+        GameProjectile p;
+        change+=projectilesAdd.size();
+        while (!projectilesAdd.isEmpty()) {
+            p = projectilesAdd.remove();
+            projectiles.add(p);
+            positionables.add(p);
+        }
+
+
+        change+=projectilesRemove.size();
+        while (!projectilesRemove.isEmpty()) {
+            p = projectilesRemove.remove();
+            projectiles.remove(p);
+            positionables.remove(p);
         }
         return change;
     }
@@ -248,6 +279,11 @@ public class Field implements Disposable {
             m.setField(this);
         }
     }
+
+    public void addProjectile(GameProjectile p){
+        projectilesAdd.add(p);
+    }
+    public void removeProjectile(GameProjectile p){projectilesRemove.add(p);}
 
     public void removeItem(ItemEntity i){
         itemsRemove.add(i);

@@ -9,6 +9,7 @@ import com.hirshi001.billions.gamepieces.entities.BoxGameEntity;
 import com.hirshi001.billions.gamepieces.entities.Player;
 import com.hirshi001.billions.gamepieces.entities.Slime;
 import com.hirshi001.billions.gamepieces.items.Sword;
+import com.hirshi001.billions.gamepieces.projecticles.Fireball;
 import com.hirshi001.billions.gamepieces.structures.House;
 import com.hirshi001.billions.inputhandlers.InputHandler;
 import com.hirshi001.billions.registry.Registry;
@@ -29,6 +30,7 @@ public class GameApplication extends GameApplicationAdapter{
         for(int i=0;i<5;i++) field.addMob(new Slime(mainPlayer.getCenterPosition().cpy().add((int)(Math.random()*10)-5,(int)(Math.random()*10)+-5),mainPlayer).setField(field));
         for(int i=0;i<1000;i++) field.addStructure(new House(new Vector2((int)(Math.random()*(field.getCols()-3)),(int)(Math.random()*(field.getRows()-3)))));
         for(int i=0;i<1000;i++) field.addItem(new Sword(new Vector2((int)(Math.random()*(field.getCols()-3)),(int)(Math.random()*(field.getRows()-3)))));
+        field.addProjectile(new Fireball(mainPlayer.getPosition().cpy(),new Vector2(1,1)));
         getGame().setField(field).setInputHandler(new InputHandler(getCamera(), field));
         Gdx.input.setInputProcessor(getGame().getInputHandler());
     }
