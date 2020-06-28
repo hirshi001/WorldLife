@@ -2,15 +2,15 @@ package com.hirshi001.billions.gamepieces.items;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.hirshi001.billions.gamepieces.entities.BoxEntity;
+import com.hirshi001.billions.gamepieces.entities.BoxGameEntity;
 
-public abstract class ItemEntity extends BoxEntity {
+public abstract class ItemEntity extends BoxGameEntity {
     public ItemEntity(Vector2 position) {
         super(position);
     }
 
-    public abstract void onDropped(BoxEntity e);
-    public abstract void onPicked(BoxEntity e);
+    public abstract void onDropped(BoxGameEntity e);
+    public abstract void onPicked(BoxGameEntity e);
 
     @Override
     public float getWidth() {
@@ -24,11 +24,6 @@ public abstract class ItemEntity extends BoxEntity {
 
     @Override
     public void drawEntity(SpriteBatch batch) {
-
-    }
-
-    @Override
-    protected void update() {
 
     }
 }

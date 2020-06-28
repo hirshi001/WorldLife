@@ -1,11 +1,9 @@
 package com.hirshi001.billions.gamepieces;
 
-import com.hirshi001.billions.gamepieces.entities.BoxEntity;
-
-import java.awt.event.ActionListener;
+import com.hirshi001.billions.gamepieces.entities.BoxGameEntity;
 
 public abstract class EntityAction {
 
-    public abstract void onAction(BoxEntity e);
+    public abstract void onAction(BoxGameEntity e);
 
 }

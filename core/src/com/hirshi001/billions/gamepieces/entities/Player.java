@@ -12,7 +12,7 @@ import com.hirshi001.billions.registry.Registry;
 import com.hirshi001.billions.util.animation.AnimationCycle;
 import com.hirshi001.billions.util.animation.Animator;
 
-public class Player extends BoxEntity {
+public class Player extends BoxGameEntity {
 
     public static final float WIDTH = 12f/ Block.BLOCKWIDTH, HEIGHT = 12f/Block.BLOCKHEIGHT;
     private static Texture t1, t2;
@@ -77,7 +77,7 @@ public class Player extends BoxEntity {
 
 
     @Override
-    protected void onMobCollision(BoxEntity e) {
+    protected void onMobCollision(BoxGameEntity e) {
         if(e instanceof Slime){
             Slime s = (Slime)e;
             if(s.getMaster()==this){return;}

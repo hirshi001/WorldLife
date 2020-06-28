@@ -3,32 +3,20 @@ package com.hirshi001.billions.gamepieces.entities;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.hirshi001.billions.field.Field;
-import com.hirshi001.billions.gamepieces.Positionable;
+import com.hirshi001.billions.gamepieces.BoxEntity;
 import com.hirshi001.billions.registry.Registry;
-import com.hirshi001.billions.util.tiles.TileIter;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public abstract class BoxEntity implements Positionable {
+public abstract class BoxGameEntity extends BoxEntity {
 
-    protected final Vector2 position, lastPosition;
-    protected Field field;
+    protected final Vector2 lastPosition;
 
-    public BoxEntity(final Vector2 position){
+    public BoxGameEntity(final Vector2 position){
         this.position = position;
         lastPosition = position.cpy();
     }
-
-    public BoxEntity setField(Field f){this.field = f; return this;}
-    public Field getField(){return this.field;}
-    public abstract float getWidth();
-    public abstract float getHeight();
-    public Vector2 getPosition(){return position;}
-
-    @Override
-    public Vector2 getLayerPosition() {return position; }
 
     public Vector2 getLastPosition(){return lastPosition;}
     public Vector2 getCenterPosition(){return getPosition().cpy().add(getWidth()/2f, getHeight()/2f);}
@@ -49,7 +37,13 @@ public abstract class BoxEntity implements Positionable {
         lastPosition.set(position);
         update();
     }
-    protected abstract void update();
+    public abstract void update();
+
+    @Override
+    public BoxGameEntity setField(Field f) {
+        field = f;
+        return this;
+    }
 
     //Currently does not use TileIter. May change later
     public void tileCollision(){
@@ -148,29 +142,20 @@ public abstract class BoxEntity implements Positionable {
 
     }
 
-    public void mobCollision(List<BoxEntity> mobs){
-        for(BoxEntity e:mobs){
+    public void mobCollision(List<BoxGameEntity> mobs){
+        for(BoxGameEntity e:mobs){
             if(touchingEntity(e)){
                 if(e==this) continue;
                 onMobCollision(e);
             }
         }
     }
-    public boolean touchingEntity(BoxEntity e){
+    public boolean touchingEntity(BoxGameEntity e){
         return touchingBox(e.getPosition(),e.getWidth(), e.getHeight());
     }
 
-    private boolean touchingBox(Vector2 pos, float width, float height){
-        return oneDimensionOverlap(pos.x, pos.x+width,getPosition().x, getPosition().x+getWidth(),false)
-                && oneDimensionOverlap(pos.y, pos.y+height,getPosition().y, getPosition().y+getHeight(),false);
-    }
 
-    private boolean touchingBox(Vector2 pos, float width, float height, boolean checkEdges){
-        return oneDimensionOverlap(pos.x, pos.x+width,getPosition().x, getPosition().x+getWidth(),checkEdges)
-                && oneDimensionOverlap(pos.y, pos.y+height,getPosition().y, getPosition().y+getHeight(),checkEdges);
-    }
-
-    protected void onMobCollision(BoxEntity e) {
+    protected void onMobCollision(BoxGameEntity e) {
         Random r = new Random();
         if(e.getCenterPosition().equals(getCenterPosition())){
             getLastPosition().set(getPosition());
@@ -194,20 +179,6 @@ public abstract class BoxEntity implements Positionable {
         }
     }
 
-    private static boolean oneDimensionOverlap(double x1, double x2, double y1, double y2, boolean checkEdges){
-        double temp;
-        if(x1>x2){
-            temp = x1;
-            x1 = x2;
-            x2 = temp;
-        }
-        if(y1>y2){
-            temp = y1;
-            y1 = y2;
-            y2 = temp;
-        }
-        if(checkEdges) return x2>=y1 && y2>=x1;
-        return  x2>y1 && y2>x1;
-    }
+
 
 }

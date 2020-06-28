@@ -4,16 +4,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.hirshi001.billions.registry.Block;
 import com.hirshi001.billions.registry.Registry;
 import com.hirshi001.billions.util.animation.AnimationCycle;
 import com.hirshi001.billions.util.animation.Animator;
 
-public class Slime extends BoxEntity{
+public class Slime extends BoxGameEntity {
 
     public static final float WIDTH = 16f/Block.BLOCKWIDTH, HEIGHT = 16f/Block.BLOCKHEIGHT;
-    private BoxEntity master;
+    private BoxGameEntity master;
     private static Texture t1, t2;
 
     static{
@@ -30,12 +29,12 @@ public class Slime extends BoxEntity{
     private boolean facingRight = true;
     private int count = 0;
 
-    public Slime(Vector2 position, BoxEntity master) {
+    public Slime(Vector2 position, BoxGameEntity master) {
         super(position);
         this.master = master;
     }
 
-    public BoxEntity getMaster(){return master;}
+    public BoxGameEntity getMaster(){return master;}
 
     @Override
     public float getWidth() {

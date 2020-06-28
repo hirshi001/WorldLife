@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.hirshi001.billions.Game;
 import com.hirshi001.billions.field.Field;
-import com.hirshi001.billions.gamepieces.entities.BoxEntity;
+import com.hirshi001.billions.gamepieces.entities.BoxGameEntity;
 import com.hirshi001.billions.gamepieces.entities.Player;
 import com.hirshi001.billions.gamepieces.entities.Slime;
 import com.hirshi001.billions.gamepieces.structures.House;
@@ -14,7 +14,7 @@ import com.hirshi001.billions.registry.Registry;
 
 public class GameApplication extends GameApplicationAdapter{
 
-    private BoxEntity mainPlayer;
+    private BoxGameEntity mainPlayer;
 
     @Override
     public void startup(){

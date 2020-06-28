@@ -1,17 +1,15 @@
 package com.hirshi001.billions.field;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
-import com.hirshi001.billions.Game;
 import com.hirshi001.billions.game.GameApplication;
-import com.hirshi001.billions.util.camera.CameraStyles;
 import com.hirshi001.billions.gamepieces.PositionComparator;
 import com.hirshi001.billions.gamepieces.Positionable;
-import com.hirshi001.billions.gamepieces.entities.BoxEntity;
+import com.hirshi001.billions.gamepieces.entities.BoxGameEntity;
+import com.hirshi001.billions.gamepieces.items.ItemEntity;
 import com.hirshi001.billions.registry.Block;
 import com.hirshi001.billions.registry.Registry;
 import com.hirshi001.billions.gamepieces.structures.Structure;
@@ -30,10 +28,13 @@ public class Field implements Disposable {
 
     private int[][] tiles, structureTiles;
 
-    private final List<BoxEntity> mobs = new LinkedList<>();
-    private final Queue<BoxEntity> mobsRemove = new LinkedList<>();
-    private final Queue<BoxEntity> mobsAdd = new LinkedList<>();
+    private final List<BoxGameEntity> mobs = new LinkedList<>();
+    private final Queue<BoxGameEntity> mobsRemove = new LinkedList<>();
+    private final Queue<BoxGameEntity> mobsAdd = new LinkedList<>();
 
+    private final List<ItemEntity> items = new LinkedList<>();
+    private final Queue<ItemEntity> itemsRemove = new LinkedList<>();
+    private final Queue<ItemEntity> itemsAdd = new LinkedList<>();
 
     private final List<Structure> structures = new LinkedList<>();
     private final Queue<Structure> structuresRemove = new LinkedList<>();
@@ -44,7 +45,7 @@ public class Field implements Disposable {
     private final PositionComparator positionComparator = new PositionComparator();
 
 
-    private BoxEntity mainPlayer;
+    private BoxGameEntity mainPlayer;
     private GameApplication game;
 
 
@@ -62,9 +63,9 @@ public class Field implements Disposable {
         }
     }
 
-    public List<BoxEntity> getMobsList(){return mobs;}
-    public BoxEntity getMainPlayer(){return mainPlayer;}
-    public void setMainPlayer(BoxEntity m){
+    public List<BoxGameEntity> getMobsList(){return mobs;}
+    public BoxGameEntity getMainPlayer(){return mainPlayer;}
+    public void setMainPlayer(BoxGameEntity m){
         mainPlayer = m;
     }
 
@@ -100,13 +101,13 @@ public class Field implements Disposable {
     }
 
     private void updateEntities(){
-        for(BoxEntity m:mobs){
+        for(BoxGameEntity m:mobs){
             m.updateBoxEntity();
         }
-        for(BoxEntity m:mobs){
+        for(BoxGameEntity m:mobs){
             m.tileCollision();
         }
-        for(BoxEntity m:mobs){
+        for(BoxGameEntity m:mobs){
             m.mobCollision(mobs);
         }
 
@@ -116,77 +117,103 @@ public class Field implements Disposable {
 
         int change = 0;
 
-        BoxEntity e;
-        synchronized (mobsAdd) {
-            change+=mobsAdd.size();
-            while (!mobsAdd.isEmpty()) {
-                e = mobsAdd.remove();
-                mobs.add(e);
-                positionables.add(e);
-            }
-        }
-        synchronized (mobsRemove) {
-            change+=mobsRemove.size();
-            while (!mobsRemove.isEmpty()) {
-                e = mobsRemove.remove();
-                mobs.remove(e);
-                positionables.remove(e);
-            }
-        }
-        Structure s;
-        synchronized (structuresAdd){
-            Vector2 pos;
-            boolean cont;
-            change+=structuresAdd.size();
-            while(!structuresAdd.isEmpty()){
-                cont = false;
-                s = structuresAdd.remove();
-                pos = s.getPosition();
-                int[][] t = s.getTiles();
-                int i, j;
-                for(i=0;i<t.length;i++){
-                    for(j=0;j<t[i].length;j++){
-                        if(!((int)pos.y+i>=0 && (int)pos.y+i<getRows() && (int)pos.x+j>=0 && (int)pos.x+j<=getCols()) || structureTiles[(int)pos.y+i][(int)pos.x+j]!=0 || Registry.getBlock(tiles[(int)pos.y+i][(int)pos.x+j]).isCollidable()){
-                            cont = true;
-                            break;
-                        }
-                    }
-                    if(cont) break;
-                }
-                if(cont) continue;
+        change+=handleMobs();
+        change+=handleItems();
+        change+=handleStructures();
 
-                for(i=0;i<t.length;i++){
-                    for(j=0;j<t[i].length;j++){
-                        structureTiles[(int)pos.y+i][(int)pos.x+j] += t[i][j];
-                    }
-                }
-                structures.add(s);
-                positionables.add(s);
-            }
-        }
-        synchronized (structuresRemove){
-            Vector2 pos;
-            change+=structuresRemove.size();
-            while(!structuresRemove.isEmpty()){
-                s = structuresRemove.remove();
-                pos = s.getPosition();
-                int[][] t = s.getTiles();
-                int i,j ;
-                for(i=0;i<t.length;i++){
-                    for(j=0;j<t[i].length;j++){
-                        if(t[i][j]!=0) structureTiles[(int)pos.y+i][(int)pos.x+j] = 0;
-                    }
-                }
-                structures.remove(s);
-                positionables.remove(s);
-            }
-        }
         if(change>=50) {
             Collections.sort(positionables, positionComparator);
         }
         else{
             bubbleSort(positionables, positionComparator);
         }
+    }
+
+    private int handleMobs(){
+        int change = 0;
+        BoxGameEntity e;
+        change+=mobsAdd.size();
+        while (!mobsAdd.isEmpty()) {
+            e = mobsAdd.remove();
+            mobs.add(e);
+            positionables.add(e);
+        }
+
+
+        change+=mobsRemove.size();
+        while (!mobsRemove.isEmpty()) {
+            e = mobsRemove.remove();
+            mobs.remove(e);
+            positionables.remove(e);
+        }
+        return change;
+    }
+    private int handleItems(){
+        int change = 0;
+        ItemEntity i;
+        change+=itemsAdd.size();
+        while (!itemsAdd.isEmpty()) {
+            i = itemsAdd.remove();
+            items.add(i);
+            positionables.add(i);
+        }
+
+        change+=itemsRemove.size();
+        while (!itemsRemove.isEmpty()) {
+            i = itemsRemove.remove();
+            items.remove(i);
+            positionables.remove(i);
+        }
+        return change;
+    }
+    private int handleStructures(){
+        int change = 0;
+        Structure s;
+        Vector2 pos;
+        boolean cont;
+        change+=structuresAdd.size();
+        while(!structuresAdd.isEmpty()){
+            cont = false;
+            s = structuresAdd.remove();
+            pos = s.getPosition();
+            int[][] t = s.getTiles();
+            int i, j;
+            for(i=0;i<t.length;i++){
+                for(j=0;j<t[i].length;j++){
+                    if(!((int)pos.y+i>=0 && (int)pos.y+i<getRows() && (int)pos.x+j>=0 && (int)pos.x+j<=getCols()) || structureTiles[(int)pos.y+i][(int)pos.x+j]!=0 || Registry.getBlock(tiles[(int)pos.y+i][(int)pos.x+j]).isCollidable()){
+                        cont = true;
+                        break;
+                    }
+                }
+                if(cont) break;
+            }
+            if(cont) continue;
+
+            for(i=0;i<t.length;i++){
+                for(j=0;j<t[i].length;j++){
+                    structureTiles[(int)pos.y+i][(int)pos.x+j] += t[i][j];
+                }
+            }
+            structures.add(s);
+            positionables.add(s);
+        }
+
+        change+=structuresRemove.size();
+        while(!structuresRemove.isEmpty()){
+            s = structuresRemove.remove();
+            pos = s.getPosition();
+            int[][] t = s.getTiles();
+            int i,j ;
+            for(i=0;i<t.length;i++){
+                for(j=0;j<t[i].length;j++){
+                    if(t[i][j]!=0) structureTiles[(int)pos.y+i][(int)pos.x+j] = 0;
+                }
+            }
+            structures.remove(s);
+            positionables.remove(s);
+
+        }
+        return change;
     }
 
     private <T> void bubbleSort(ArrayList<T> e, Comparator<? super T> c){
@@ -211,17 +238,25 @@ public class Field implements Disposable {
         }
     }
 
-    public void removeMob(BoxEntity m){
+    public void removeMob(BoxGameEntity m){
         synchronized (mobsRemove){
             mobsRemove.add(m);
         }
     }
-
-    public void addMob(BoxEntity m){
+    public void addMob(BoxGameEntity m){
         synchronized (mobsAdd){
             mobsAdd.add(m);
             m.setField(this);
         }
+    }
+
+    public void removeItem(ItemEntity i){
+        itemsRemove.add(i);
+    }
+    public void addItem(ItemEntity i){
+        itemsAdd.add(i);
+        i.setField(this);
+
     }
 
     public void addStructure(Structure s){
@@ -229,7 +264,6 @@ public class Field implements Disposable {
             structuresAdd.add(s);
         }
     }
-
     public void removeStructure(Structure s){
         synchronized (structuresRemove){
             structuresRemove.add(s);
