@@ -11,7 +11,7 @@ WASD to move.
 <br>
 LeftClick to shoot
 <br>
-Space to enter buildings (currently nothing inside of the building, just some grass)
+Press Space when in front of a door to enter buildings (currently nothing inside of the building, just some grass)
 <br>
 R to toggle camera follow.
 <br>
