@@ -39,7 +39,7 @@ public class ScreenMover extends InputAdapter {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
+        if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)){
             handler.getCamera().translate(lastX - screenX, screenY-lastY);
             lastX = screenX;
             lastY = screenY;

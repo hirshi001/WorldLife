@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.hirshi001.billions.field.Field;
 import com.hirshi001.billions.gamepieces.Positionable;
 
+import java.util.Objects;
+
 public abstract class Structure implements Positionable {
 
     protected Field field;
@@ -16,7 +18,7 @@ public abstract class Structure implements Positionable {
     public Structure setField(Field field){this.field = field; return this;}
     public abstract void update();
     public Vector2 getPosition(){return position;}
-    public abstract int[][] getTiles();
+    public abstract StructureTile[][] getTiles();
 
     /** @return the width of the texture drawn relative to the block scale. */
     public abstract float getWidth();
@@ -35,23 +37,47 @@ public abstract class Structure implements Positionable {
     }
     public abstract void drawStructure(SpriteBatch batch);
 
-    public static int[][] vFlip(int[][] tiles){
-        int[][] newT = new int[tiles.length][longestRow(tiles)];
-        for(int i=0;i<newT.length;i++){
-            for(int j=0;j<newT[i].length;j++){
-                newT[i][j] = tiles[newT.length-1-i][j];
+    public static Integer[][] vFlip(Integer[][] tiles){
+        Integer[][] newT = new Integer[tiles.length][longestRow(tiles)];
+        for(int i=0;i<tiles.length;i++){
+            for(int j=0;j<tiles[i].length;j++){
+                newT[i][j] = tiles[tiles.length-1-i][j];
             }
         }
         return newT;
     }
 
-    public static int longestRow(int[][] tiles){
+    public static <E> int longestRow(E[][] tiles){
         int max = 0;
-        for(int[] t:tiles){
+        for(E[] t:tiles){
             if(t.length>max){
                 max = t.length;
             }
         }
         return max;
+    }
+
+    public static StructureTile[][] convert(Structure s, Integer[][] tiles){
+        StructureTile[][] structureTiles = new StructureTile[tiles.length][longestRow(tiles)];
+        StructureTile tile;
+        for(int i=0;i<structureTiles.length;i++){
+            for(int j=0;j<structureTiles[i].length;j++){
+                tile = new StructureTile();
+                int type = tiles[i][j];
+                if(type<=0){structureTiles[i][j] = tile; continue;}
+                tile.structure(s);
+                switch (type){
+                    case 1:
+                        tile.collidable(true);
+                        break;
+                    case 2:
+                        tile.isDoor(true);
+                        tile.collidable(false);
+                        break;
+                }
+               structureTiles[i][j] = tile;
+            }
+        }
+        return structureTiles;
     }
 }

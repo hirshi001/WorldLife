@@ -9,20 +9,21 @@ import com.hirshi001.billions.registry.Registry;
 public class House extends Structure {
 
     public static final Texture t;
-    private int[][] tiles;
+    private  StructureTile[][] structureTiles;
     static {
         t = new Texture("rpg-pack/props_n_decorations/generic-rpg-house-inn.png");
         Registry.addDisposable(t);
+
     }
 
     public House(Vector2 position) {
         super(position);
-        tiles = Structure.vFlip(new int[][]{
+        structureTiles = Structure.convert(this, Structure.vFlip(new Integer[][]{
                 {1,1,1,1},
                 {1,1,1,1},
                 {1,1,1,1},
                 {0,2,2,0}
-        });
+        }));
     }
 
     @Override
@@ -41,8 +42,8 @@ public class House extends Structure {
     }
 
     @Override
-    public int[][] getTiles() {
-        return tiles;
+    public StructureTile[][] getTiles() {
+        return structureTiles;
     }
 
     @Override

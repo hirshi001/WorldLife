@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.hirshi001.billions.gamepieces.items.ItemEntity;
+import com.hirshi001.billions.gamepieces.projecticles.Fireball;
 import com.hirshi001.billions.registry.Block;
 import com.hirshi001.billions.registry.Registry;
 import com.hirshi001.billions.util.animation.AnimationCycle;
@@ -17,6 +18,9 @@ public class Player extends BoxGameEntity {
 
     public static final float WIDTH = 12f/ Block.BLOCKWIDTH, HEIGHT = 12f/Block.BLOCKHEIGHT;
     private static Texture t1, t2;
+
+    private int lastShot = 0;
+    private int lastShotLim = 20;
 
     static{
         t1 = new Texture("textures/entities/player/player1.png");
@@ -78,6 +82,16 @@ public class Player extends BoxGameEntity {
         if(count>10){
             cycle.cycle();
             count = 0;
+        }
+
+        lastShot++;
+        if(lastShot>lastShotLim){
+            lastShot=lastShotLim;
+        }
+        if(lastShot==lastShotLim && Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
+            lastShot = 0;
+            Vector3 dir = getField().getGameApplication().getCamera().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(),0));
+            getField().addProjectile(new Fireball(getPosition().cpy(),getCenterPosition().scl(Block.BLOCKWIDTH, Block.BLOCKHEIGHT).sub(dir.x, dir.y).rotate(180)));
         }
     }
 

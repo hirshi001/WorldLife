@@ -21,7 +21,7 @@ public class GameApplication extends GameApplicationAdapter{
     @Override
     public void startup(){
         setGame(new Game(getCamera()));
-        Field field = new Field(200,200, this);
+        Field field = new Field(2000,2000, this);
         tiles(field);
         mainPlayer = new Player(new Vector2(100,100));
         field.setMainPlayer(mainPlayer);

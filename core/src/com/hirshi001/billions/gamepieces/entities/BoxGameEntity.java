@@ -90,7 +90,7 @@ public abstract class BoxGameEntity extends BoxEntity {
 
         for(int i=startX;dir.x>0?i<=endX:i>=endX;i+=dx){
             for(int j=startY;dir.y>0?j<=endY:j>=endY;j+=dy){
-                if (Registry.getBlock(tiles[j][i]).isCollidable() || field.getStructureTiles()[j][i]==1) {
+                if (Registry.getBlock(tiles[j][i]).isCollidable() || field.getStructureTiles()[j][i].isCollidable()) {
                     if (!touchingBox(new Vector2(i, j), 1, 1, false)) continue;
                     if(dir.x!=0 && dir.y!=0) {
                         slope = dir.y / dir.x;

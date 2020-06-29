@@ -12,6 +12,7 @@ import com.hirshi001.billions.gamepieces.Positionable;
 import com.hirshi001.billions.gamepieces.entities.BoxGameEntity;
 import com.hirshi001.billions.gamepieces.items.ItemEntity;
 import com.hirshi001.billions.gamepieces.projecticles.GameProjectile;
+import com.hirshi001.billions.gamepieces.structures.StructureTile;
 import com.hirshi001.billions.registry.Block;
 import com.hirshi001.billions.registry.Registry;
 import com.hirshi001.billions.gamepieces.structures.Structure;
@@ -28,7 +29,8 @@ public class Field implements Disposable {
 
     private int rows, cols;
 
-    private int[][] tiles, structureTiles;
+    private int[][] tiles;
+    private StructureTile[][] structureTiles;
 
     private final List<BoxGameEntity> mobs = new LinkedList<>();
     private final Queue<BoxGameEntity> mobsRemove = new LinkedList<>();
@@ -61,11 +63,12 @@ public class Field implements Disposable {
         this.cols = cols;
         this.game = game;
         tiles = new int[rows][cols];
-        structureTiles = new int[rows][cols];
+        structureTiles = new StructureTile[rows][cols];
         int i, j;
         for(i=0;i<rows;i++){
             for(j=0;j<cols;j++){
                 tiles[i][j] = 0;
+                structureTiles[i][j] = new StructureTile();
             }
         }
     }
@@ -91,7 +94,7 @@ public class Field implements Disposable {
         return this;
     }
     public int[][] getTiles(){return tiles;}
-    public int[][] getStructureTiles(){return structureTiles;}
+    public StructureTile[][] getStructureTiles(){return structureTiles;}
 
     private boolean safeChange(int row, int col, int val){
         if(row>=0 && row<rows && col>=0 && col<cols){
@@ -121,12 +124,15 @@ public class Field implements Disposable {
         change+=handleItems();
         change+=handleStructures();
 
-        if(change>=50) {
+        if(change>=5) {
             Collections.sort(positionables, positionComparator);
         }
+
         else{
             bubbleSort(positionables, positionComparator);
         }
+
+
     }
 
     private void updateMobs(){
@@ -203,14 +209,16 @@ public class Field implements Disposable {
         boolean cont;
         change+=structuresAdd.size();
         while(!structuresAdd.isEmpty()){
+
+            //Check if Structure can actually be put in that location. If it can't, then don't put it.
             cont = false;
             s = structuresAdd.remove();
             pos = s.getPosition();
-            int[][] t = s.getTiles();
+            StructureTile[][] t = s.getTiles();
             int i, j;
             for(i=0;i<t.length;i++){
                 for(j=0;j<t[i].length;j++){
-                    if(!((int)pos.y+i>=0 && (int)pos.y+i<getRows() && (int)pos.x+j>=0 && (int)pos.x+j<=getCols()) || structureTiles[(int)pos.y+i][(int)pos.x+j]!=0 || Registry.getBlock(tiles[(int)pos.y+i][(int)pos.x+j]).isCollidable()){
+                    if(!((int)pos.y+i>=0 && (int)pos.y+i<getRows() && (int)pos.x+j>=0 && (int)pos.x+j<=getCols()) || structureTiles[(int)pos.y+i][(int)pos.x+j].isStructure() || Registry.getBlock(tiles[(int)pos.y+i][(int)pos.x+j]).isCollidable()){
                         cont = true;
                         break;
                     }
@@ -221,7 +229,7 @@ public class Field implements Disposable {
 
             for(i=0;i<t.length;i++){
                 for(j=0;j<t[i].length;j++){
-                    structureTiles[(int)pos.y+i][(int)pos.x+j] += t[i][j];
+                    structureTiles[(int)pos.y+i][(int)pos.x+j].set(t[i][j]);
                 }
             }
             structures.add(s);
@@ -232,11 +240,11 @@ public class Field implements Disposable {
         while(!structuresRemove.isEmpty()){
             s = structuresRemove.remove();
             pos = s.getPosition();
-            int[][] t = s.getTiles();
+            StructureTile[][] t = s.getTiles();
             int i,j ;
             for(i=0;i<t.length;i++){
                 for(j=0;j<t[i].length;j++){
-                    if(t[i][j]!=0) structureTiles[(int)pos.y+i][(int)pos.x+j] = 0;
+                    if(t[i][j].isStructure()) structureTiles[(int)pos.y+i][(int)pos.x+j].isStructure(false);
                 }
             }
             structures.remove(s);
