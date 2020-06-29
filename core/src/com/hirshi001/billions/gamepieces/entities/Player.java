@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.hirshi001.billions.field.Field;
 import com.hirshi001.billions.gamepieces.items.ItemEntity;
 import com.hirshi001.billions.gamepieces.projecticles.Fireball;
+import com.hirshi001.billions.gamepieces.structures.StructureTile;
 import com.hirshi001.billions.registry.Block;
 import com.hirshi001.billions.registry.Registry;
 import com.hirshi001.billions.util.animation.AnimationCycle;
@@ -75,7 +77,7 @@ public class Player extends BoxGameEntity {
         getPosition().add(mov);
 
         Vector2 centerPos = getCenterPosition();
-        Vector3 screenPos = field.getGameApplication().getGame().getCamera().project(new Vector3(centerPos.x*Block.BLOCKWIDTH, centerPos.y*Block.BLOCKHEIGHT, 0));
+        Vector3 screenPos = field.getGame().getCamera().project(new Vector3(centerPos.x*Block.BLOCKWIDTH, centerPos.y*Block.BLOCKHEIGHT, 0));
         facingRight = screenPos.x<Gdx.input.getX();
 
         count++;
@@ -90,11 +92,27 @@ public class Player extends BoxGameEntity {
         }
         if(lastShot==lastShotLim && Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
             lastShot = 0;
-            Vector3 dir = getField().getGameApplication().getCamera().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(),0));
+            Vector3 dir = field.getGame().getCamera().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(),0));
             getField().addProjectile(new Fireball(getPosition().cpy(),getCenterPosition().scl(Block.BLOCKWIDTH, Block.BLOCKHEIGHT).sub(dir.x, dir.y).rotate(180)));
         }
     }
 
+    @Override
+    public boolean onTouchingDoor(StructureTile tile) {
+        if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+            if(tile.getStructure().hasInnerField()){
+                Field currentField = getField();
+                currentField.removeMob(this);
+                Field newField = tile.getStructure().getInnerField();
+                newField.addMob(this);
+                newField.setMainPlayer(this);
+                currentField.getGame().setField(newField);
+                getPosition().set(tile.getStructure().entrancePosition());
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     protected void onMobCollision(BoxGameEntity e) {

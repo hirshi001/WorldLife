@@ -67,6 +67,21 @@ public class Slime extends BoxGameEntity {
 
     @Override
     public void update() {
+       moveToMaster();
+
+
+        count++;
+        if(count>12){
+            cycle.cycle();
+            count = -(int)(Math.random()*3);
+        }
+    }
+
+    private void moveToMaster(){
+        if(!getMaster().getField().equals(getField())){
+            getField().removeMob(this);
+            getMaster().getField().addMob(this);
+        }
 
         Vector2 playerPos = master.getCenterPosition();
 
@@ -82,14 +97,7 @@ public class Slime extends BoxGameEntity {
                 getPosition().add(mov.scl(0.202f));
             }
         }
-
         facingRight = getCenterPosition().x<getMaster().getCenterPosition().x;
-
-        count++;
-        if(count>12){
-            cycle.cycle();
-            count = -(int)(Math.random()*3);
-        }
     }
 
 }

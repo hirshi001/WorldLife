@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
+import com.hirshi001.billions.Game;
 import com.hirshi001.billions.game.GameApplication;
 import com.hirshi001.billions.gamepieces.PositionComparator;
 import com.hirshi001.billions.gamepieces.Positionable;
@@ -53,15 +54,13 @@ public class Field implements Disposable {
 
     private final PositionComparator positionComparator = new PositionComparator();
 
-
+    private Game game;
     private BoxGameEntity mainPlayer;
-    private GameApplication game;
 
 
-    public Field(int rows, int cols, GameApplication game){
+    public Field(int rows, int cols){
         this.rows = rows;
         this.cols = cols;
-        this.game = game;
         tiles = new int[rows][cols];
         structureTiles = new StructureTile[rows][cols];
         int i, j;
@@ -79,6 +78,8 @@ public class Field implements Disposable {
         mainPlayer = m;
     }
 
+    public Game getGame(){return this.game;}
+    public Field setGame(Game game){this.game = game; return this;}
 
     public int getRows() {
         return rows;
@@ -87,7 +88,6 @@ public class Field implements Disposable {
         return cols;
     }
 
-    public GameApplication getGameApplication(){return game;}
 
     public Field setTiles(int[][] tiles){
         this.tiles = tiles;
@@ -154,6 +154,7 @@ public class Field implements Disposable {
             e = mobsAdd.remove();
             mobs.add(e);
             positionables.add(e);
+            e.setField(this);
         }
 
 
@@ -173,6 +174,7 @@ public class Field implements Disposable {
             p = projectilesAdd.remove();
             projectiles.add(p);
             positionables.add(p);
+            p.setField(this);
         }
 
 
@@ -192,6 +194,7 @@ public class Field implements Disposable {
             i = itemsAdd.remove();
             items.add(i);
             positionables.add(i);
+            i.setField(this);
         }
 
         change+=itemsRemove.size();
@@ -233,6 +236,7 @@ public class Field implements Disposable {
                 }
             }
             structures.add(s);
+            s.setField(this);
             positionables.add(s);
         }
 
@@ -244,7 +248,7 @@ public class Field implements Disposable {
             int i,j ;
             for(i=0;i<t.length;i++){
                 for(j=0;j<t[i].length;j++){
-                    if(t[i][j].isStructure()) structureTiles[(int)pos.y+i][(int)pos.x+j].isStructure(false);
+                    if(t[i][j].isStructure()) structureTiles[(int)pos.y+i][(int)pos.x+j]=new StructureTile();
                 }
             }
             structures.remove(s);
@@ -315,7 +319,8 @@ public class Field implements Disposable {
 
     public void draw(SpriteBatch batch){
         Vector3 bottomLeft = new Vector3(0, Gdx.graphics.getHeight(),0), topRight = new Vector3(Gdx.graphics.getWidth(),0,0);
-        OrthographicCamera camera = getGameApplication().getGame().getCamera();
+        if(getGame()==null) System.out.println("NULL");;
+        OrthographicCamera camera = getGame().getCamera();
         camera.unproject(bottomLeft).scl(1f/Block.BLOCKWIDTH,1f/Block.BLOCKHEIGHT,1);
         camera.unproject(topRight).scl(1f/Block.BLOCKWIDTH,1f/Block.BLOCKHEIGHT,1);
 

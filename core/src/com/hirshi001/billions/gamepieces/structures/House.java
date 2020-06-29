@@ -3,6 +3,7 @@ package com.hirshi001.billions.gamepieces.structures;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.hirshi001.billions.field.Field;
 import com.hirshi001.billions.registry.Block;
 import com.hirshi001.billions.registry.Registry;
 
@@ -24,6 +25,17 @@ public class House extends Structure {
                 {1,1,1,1},
                 {0,2,2,0}
         }));
+        setInsideField(new Field(30,30));
+    }
+
+    @Override
+    public boolean hasField() {
+        return true;
+    }
+
+    @Override
+    public Vector2 entrancePosition() {
+        return new Vector2(5,5);
     }
 
     @Override

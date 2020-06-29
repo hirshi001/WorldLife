@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.hirshi001.billions.field.Field;
 import com.hirshi001.billions.gamepieces.BoxEntity;
 import com.hirshi001.billions.gamepieces.items.ItemEntity;
+import com.hirshi001.billions.gamepieces.structures.StructureTile;
 import com.hirshi001.billions.registry.Registry;
 
 import java.util.List;
@@ -146,7 +147,21 @@ public abstract class BoxGameEntity extends BoxEntity {
             }
         }
 
+        boolean shouldBreak = false;
+        for(int i=startX;dir.x>0?i<=endX:i>=endX;i+=dx){
+            for(int j=startY;dir.y>0?j<=endY:j>=endY;j+=dy) {
+                if(field.getStructureTiles()[j][i].isDoor()){
+                    if(onTouchingDoor(field.getStructureTiles()[j][i])) {
+                        shouldBreak = true;
+                        break;
+                    }
+                }
+            }
+            if(shouldBreak) break;
+        }
     }
+
+    public boolean onTouchingDoor(StructureTile tile){return false;}
 
     public boolean touchingEntity(BoxEntity e){
         return touchingBox(e.getPosition(),e.getWidth(), e.getHeight());

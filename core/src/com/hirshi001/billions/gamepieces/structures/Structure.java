@@ -10,16 +10,22 @@ import java.util.Objects;
 public abstract class Structure implements Positionable {
 
     protected Field field;
+    private boolean hasField = false;
     protected Vector2 position;
+    protected Field insideField;
     public Structure(Vector2 position){
         this.position = position;
     }
 
-    public Structure setField(Field field){this.field = field; return this;}
+    public Structure setField(Field field){this.field = field; hasField = true; return this;}
+    public Field getField(){return field;}
+    public Structure setInsideField(Field field){this.insideField = field;return this;}
+    public Field getInnerField(){return insideField;}
+    public boolean hasInnerField(){return insideField!=null;}
+    public boolean hasField(){return hasField;}
     public abstract void update();
     public Vector2 getPosition(){return position;}
     public abstract StructureTile[][] getTiles();
-
     /** @return the width of the texture drawn relative to the block scale. */
     public abstract float getWidth();
     /** @return the height of the texture drawn relative to the block scale. */
@@ -64,20 +70,23 @@ public abstract class Structure implements Positionable {
             for(int j=0;j<structureTiles[i].length;j++){
                 tile = new StructureTile();
                 int type = tiles[i][j];
-                if(type<=0){structureTiles[i][j] = tile; continue;}
                 tile.structure(s);
+                if(type<=0){structureTiles[i][j] = tile; continue;}
                 switch (type){
                     case 1:
                         tile.collidable(true);
                         break;
                     case 2:
                         tile.isDoor(true);
-                        tile.collidable(false);
                         break;
                 }
                structureTiles[i][j] = tile;
             }
         }
         return structureTiles;
+    }
+
+    public Vector2 entrancePosition(){
+        return new Vector2(0,0);
     }
 }

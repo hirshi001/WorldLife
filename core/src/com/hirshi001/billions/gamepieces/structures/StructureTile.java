@@ -45,6 +45,10 @@ public class StructureTile {
         return this;
     }
 
+    public boolean isDoor(){
+        return isDoor;
+    }
+
     public StructureTile set(StructureTile s){
         this.isStructure = s.isStructure;
         this.structure = s.structure;

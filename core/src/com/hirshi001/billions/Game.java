@@ -19,8 +19,9 @@ public class Game implements Disposable {
 
     private GameApplicationAdapter application;
 
-    public Game(OrthographicCamera camera){
+    public Game(OrthographicCamera camera, Field f){
         this.camera = camera;
+        setField(f);
     }
 
     public Game setSpriteBatch(SpriteBatch batch){
@@ -30,6 +31,7 @@ public class Game implements Disposable {
     public SpriteBatch getSpriteBatch(){return this.spriteBatch;}
     public Game setField(Field f){
         this.field = f;
+        field.setGame(this);
         return this;
     }
     public Field getField(){return field;}
@@ -50,10 +52,8 @@ public class Game implements Disposable {
     }
 
     public void update(){
-
         field.update();
         handleCameraPosition();
-
     }
 
     private void handleCameraPosition(){
