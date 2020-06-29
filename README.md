@@ -29,3 +29,5 @@ Creating new mobs, structures, projectiles, and items are easy. Just use the cod
 
 Items don't do anything. I have plans to add functionality to items and hopefully make them compatibale with mobs. If you want to do this yourself, in the BoxGameEntity class (this class is for mobs), there is an onTouchingItem(Item i) method which you can use.
 
+Also, there is nearly no documentation because I'm grinding right now and don't have time to. 
+
