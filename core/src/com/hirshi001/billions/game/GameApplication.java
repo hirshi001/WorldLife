@@ -20,15 +20,15 @@ public class GameApplication extends GameApplicationAdapter{
 
     @Override
     public void startup(){
-        Field field = new Field(2000,2000);
+        Field field = new Field(500,500);
         tiles(field);
         mainPlayer = new Player(new Vector2(100,100));
         field.setMainPlayer(mainPlayer);
         field.addMob(mainPlayer);
 
         for(int i=0;i<5;i++) field.addMob(new Slime(mainPlayer.getCenterPosition().cpy().add((int)(Math.random()*10)-5,(int)(Math.random()*10)+-5),mainPlayer).setField(field));
-        for(int i=0;i<10000;i++) field.addStructure(new House(new Vector2((int)(Math.random()*(field.getCols()-3)),(int)(Math.random()*(field.getRows()-3)))));
-        for(int i=0;i<1000;i++) field.addItem(new Sword(new Vector2((int)(Math.random()*(field.getCols()-3)),(int)(Math.random()*(field.getRows()-3)))));
+        for(int i=0;i<100;i++) field.addStructure(new House(new Vector2((int)(Math.random()*(field.getCols()-3)),(int)(Math.random()*(field.getRows()-3)))));
+        for(int i=0;i<50;i++) field.addItem(new Sword(new Vector2((int)(Math.random()*(field.getCols()-3)),(int)(Math.random()*(field.getRows()-3)))));
         field.addProjectile(new Fireball(mainPlayer.getPosition().cpy(),new Vector2(1,1)));
         Game g = new Game(getCamera(), field).setInputHandler(new InputHandler(getCamera(), field));
         setGame(g);

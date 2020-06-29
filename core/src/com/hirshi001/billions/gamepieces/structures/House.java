@@ -25,7 +25,21 @@ public class House extends Structure {
                 {1,1,1,1},
                 {0,2,2,0}
         }));
-        setInsideField(new Field(30,30));
+        Field f = new Field(30,30);
+        tiles(f);
+        setInsideField(f);
+    }
+
+    private void tiles(Field f){
+        int[][] tiles = f.getTiles();
+        int row, col;
+        for(row=0;row<tiles.length;row++){
+            for(col=0;col<tiles[row].length;col++){
+                if(row==0 || row==tiles.length-1 || col == 0 || col==tiles[row].length-1) tiles[row][col] = Registry.WALL.getId();
+                else if(Math.random()>0.95) tiles[row][col] = Registry.WALL.getId();
+                else tiles[row][col] = Registry.GRASS.getId();
+            }
+        }
     }
 
     @Override
