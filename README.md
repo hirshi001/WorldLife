@@ -9,9 +9,33 @@ Instruction on how to play:
 <br>
 WASD to move.
 <br>
+LeftClick to shoot
+<br>
+Press Space when in front of a door to enter buildings (currently nothing inside of the building, just some grass)
+<br>
 R to toggle camera follow.
 <br>
 LeftShift to move camera to player.
 <br>
 Right Click and Drag to move camera around the field. (This automatically turns of camera follow)
+
+<br>
+<br>
+<br>
+
+MODDIFICATIONS:
+If you want to mod the game, good luck cause there are no tutorials, however once you understand the code, creating mods for the game is very, very simple. I coded the project the way I did just mainly for creating mods. 
+While modding the game, there are a few things to note.
+
+Creation of the starting field, structures, and mobs should happen in the startup method in GameApplication.
+
+Creating new mobs, structures, projectiles, and items are easy. Just use the code in other Objects as an example. Make sure the new thing you are creating has the correct inheritance structure.
+
+Items don't do anything. I have plans to add functionality to items and hopefully make them compatibale with mobs. If you want to do this yourself, in the BoxGameEntity class (this class is for mobs), there is an onTouchingItem(Item i) method which you can use.
+
+Structures will not be placed if there is another structure or a collidable tile in the way.
+
+Make sure to use the Registry class properly if you want to add different kinds of tiles.
+
+Also, there is nearly no documentation because I'm grinding right now and don't have time to. 
 
