@@ -19,8 +19,9 @@ LeftShift to move camera to player.
 <br>
 Right Click and Drag to move camera around the field. (This automatically turns of camera follow)
 
-
-
+<br>
+<br>
+<br>
 
 MODDIFICATIONS:
 If you want to mod the game, good luck cause there are no tutorials, however there are a few things to note.
