@@ -28,6 +28,9 @@ public class Game implements Disposable {
         this.application = application;
         return this;
     }
+    public GameApplicationAdapter getGameApplicationAdapter(){
+        return application;
+    }
 
     public Game setSpriteBatch(SpriteBatch batch){
         this.spriteBatch = batch;

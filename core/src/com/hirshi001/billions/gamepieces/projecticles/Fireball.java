@@ -43,7 +43,7 @@ public class Fireball extends GameProjectile {
         getPosition().sub(angle);
         angle.set(getCenterPosition().sub(m.getCenterPosition())).nor().scl(speed);
         getPosition().add(angle);
-        m.applyDamage(5);
+        m.applyDamage(5, this);
     }
 
     @Override
