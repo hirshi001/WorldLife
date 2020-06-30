@@ -32,6 +32,11 @@ public abstract class GameMob extends BoxEntity {
     public Vector2 getCenterPosition(){return getPosition().cpy().add(getWidth()/2f, getHeight()/2f);}
     public Vector2 getCenterPosition(Vector2 v){return v.cpy().add(getWidth()/2f, getHeight()/2f);}
 
+    public GameMob applyDamage(int damage, Object source){
+        getField().removeMob(this);
+        return this;
+    }
+
     @Override
     public GameMob shiftByCenter() {
         return (GameMob)super.shiftByCenter();

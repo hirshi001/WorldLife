@@ -10,6 +10,8 @@ import java.util.List;
 
 public abstract class GameProjectile extends BoxEntity {
 
+    protected Object source = null;
+
     public GameProjectile(Vector2 position) {
         super(position);
     }
@@ -27,6 +29,14 @@ public abstract class GameProjectile extends BoxEntity {
         return !(getPosition().x+getWidth()<bottomLeft.x || getPosition().x>topRight.x || getPosition().y+getHeight()<bottomLeft.y || getPosition().y>topRight.y);
     }
 
+    public GameProjectile source(Object o){
+        this.source = o;
+        return this;
+    }
+
+    public Object getSource(){
+        return source;
+    }
 
     public void touchingMob(List<GameMob> mobs){
         for(GameMob m:mobs){

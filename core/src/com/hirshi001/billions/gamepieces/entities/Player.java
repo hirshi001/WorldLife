@@ -97,8 +97,13 @@ public class Player extends GameMob {
             Vector3 dir3 = field.getGame().getCamera().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(),0));
             Vector2 dir = getCenterPosition().scl(Block.BLOCKWIDTH, Block.BLOCKHEIGHT).sub(dir3.x, dir3.y).rotate(180);
 
-            getField().addProjectile(new Fireball(getCenterPosition().add(dir.nor().scl(1.15f)),dir).shiftByCenter());
+            getField().addProjectile(new Fireball(getCenterPosition().add(dir.nor().scl(1.15f)),dir).shiftByCenter().source(this));
         }
+    }
+
+    @Override
+    public GameMob applyDamage(int damage, Object source) {
+        return this;
     }
 
     @Override
