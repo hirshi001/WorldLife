@@ -24,6 +24,11 @@ public class Game implements Disposable {
         setField(f);
     }
 
+    public Game setGameApplicationAdapter(GameApplicationAdapter application){
+        this.application = application;
+        return this;
+    }
+
     public Game setSpriteBatch(SpriteBatch batch){
         this.spriteBatch = batch;
         return this;

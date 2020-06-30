@@ -16,6 +16,7 @@ import com.hirshi001.billions.registry.Registry;
 import com.hirshi001.billions.util.animation.AnimationCycle;
 import com.hirshi001.billions.util.animation.Animator;
 
+import java.awt.event.ActionListener;
 import java.util.List;
 
 public class Player extends GameMob {
@@ -98,6 +99,7 @@ public class Player extends GameMob {
             Vector2 dir = getCenterPosition().scl(Block.BLOCKWIDTH, Block.BLOCKHEIGHT).sub(dir3.x, dir3.y).rotate(180);
 
             getField().addProjectile(new Fireball(getCenterPosition().add(dir.nor().scl(1.15f)),dir).shiftByCenter().source(this));
+
         }
     }
 
