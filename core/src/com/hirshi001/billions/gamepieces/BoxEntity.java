@@ -21,6 +21,7 @@ public abstract class BoxEntity implements Positionable {
     public BoxEntity setField(Field f){this.field = f; return this;}
     public Field getField(){return this.field;}
     public Vector2 getPosition(){return position;}
+    public Vector2 getCenterPosition(){return getPosition().cpy();}
 
     public BoxEntity shiftByCenter(){
         getPosition().sub(getWidth()/2, getHeight()/2);

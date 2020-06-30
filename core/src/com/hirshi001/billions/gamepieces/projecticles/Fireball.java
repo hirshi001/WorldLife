@@ -33,7 +33,10 @@ public class Fireball extends GameProjectile {
 
     @Override
     public void onTouchingMob(GameMob m) {
-
+        getPosition().sub(angle);
+        //angle.rotate((int)(Math.random()*360));
+        angle.set(getCenterPosition().sub(m.getCenterPosition())).nor().scl(speed);
+        getPosition().add(angle);
     }
 
     @Override
