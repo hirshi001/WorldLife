@@ -5,21 +5,19 @@ import com.badlogic.gdx.math.Vector2;
 import com.hirshi001.billions.field.Field;
 import com.hirshi001.billions.gamepieces.Positionable;
 
-import java.util.Objects;
-
-public abstract class Structure implements Positionable {
+public abstract class GameStructure implements Positionable {
 
     protected Field field;
     private boolean hasField = false;
     protected Vector2 position;
     protected Field insideField;
-    public Structure(Vector2 position){
+    public GameStructure(Vector2 position){
         this.position = position;
     }
 
-    public Structure setField(Field field){this.field = field; hasField = true; return this;}
+    public GameStructure setField(Field field){this.field = field; hasField = true; return this;}
     public Field getField(){return field;}
-    public Structure setInsideField(Field field){this.insideField = field;return this;}
+    public GameStructure setInsideField(Field field){this.insideField = field;return this;}
     public Field getInnerField(){return insideField;}
     public boolean hasInnerField(){return insideField!=null;}
     public boolean hasField(){return hasField;}
@@ -63,7 +61,7 @@ public abstract class Structure implements Positionable {
         return max;
     }
 
-    public static StructureTile[][] convert(Structure s, Integer[][] tiles){
+    public static StructureTile[][] convert(GameStructure s, Integer[][] tiles){
         StructureTile[][] structureTiles = new StructureTile[tiles.length][longestRow(tiles)];
         StructureTile tile;
         for(int i=0;i<structureTiles.length;i++){

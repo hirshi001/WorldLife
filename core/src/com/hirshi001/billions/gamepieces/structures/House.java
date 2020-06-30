@@ -7,7 +7,7 @@ import com.hirshi001.billions.field.Field;
 import com.hirshi001.billions.registry.Block;
 import com.hirshi001.billions.registry.Registry;
 
-public class House extends Structure {
+public class House extends GameStructure {
 
     public static final Texture t;
     private  StructureTile[][] structureTiles;
@@ -19,7 +19,7 @@ public class House extends Structure {
 
     public House(Vector2 position) {
         super(position);
-        structureTiles = Structure.convert(this, Structure.vFlip(new Integer[][]{
+        structureTiles = GameStructure.convert(this, GameStructure.vFlip(new Integer[][]{
                 {1,1,1,1},
                 {1,1,1,1},
                 {1,1,1,1},
@@ -31,7 +31,7 @@ public class House extends Structure {
     }
 
     private void tiles(Field f){
-        int[][] tiles = f.getTiles();
+        short[][] tiles = f.getTiles();
         int row, col;
         for(row=0;row<tiles.length;row++){
             for(col=0;col<tiles[row].length;col++){

@@ -11,21 +11,31 @@ import com.hirshi001.billions.registry.Registry;
 import java.util.List;
 import java.util.Random;
 
-public abstract class BoxGameEntity extends BoxEntity {
+public abstract class GameMob extends BoxEntity {
 
     protected final Vector2 lastPosition;
 
     private int lastItemTouchingCheck = 0;
     private int itemTouchingCheckLim = 20;
 
-    public BoxGameEntity(final Vector2 position){
+    public GameMob(final Vector2 position){
         super(position);
-        lastPosition = position.cpy();
+        lastPosition = getPosition().cpy();
+    }
+
+    public GameMob(final Vector2 position, boolean isCenter){
+        super(position, isCenter);
+        lastPosition = getPosition().cpy();
     }
 
     public Vector2 getLastPosition(){return lastPosition;}
     public Vector2 getCenterPosition(){return getPosition().cpy().add(getWidth()/2f, getHeight()/2f);}
     public Vector2 getCenterPosition(Vector2 v){return v.cpy().add(getWidth()/2f, getHeight()/2f);}
+
+    @Override
+    public GameMob shiftByCenter() {
+        return (GameMob)super.shiftByCenter();
+    }
 
     @Override
     public void draw(Vector2 bottomLeft, Vector2 topRight, SpriteBatch batch) {
@@ -47,7 +57,7 @@ public abstract class BoxGameEntity extends BoxEntity {
     public abstract void update();
 
     @Override
-    public BoxGameEntity setField(Field f) {
+    public GameMob setField(Field f) {
         field = f;
         return this;
     }
@@ -55,7 +65,7 @@ public abstract class BoxGameEntity extends BoxEntity {
     //Currently does not use TileIter. May change later
     public void tileCollision(){
 
-        int[][] tiles =getField().getTiles();
+        short[][] tiles =getField().getTiles();
         Vector2 dir = getPosition().cpy().sub(getLastPosition());
         //System.out.println(dir);
         //check right side of tile
@@ -167,8 +177,8 @@ public abstract class BoxGameEntity extends BoxEntity {
         return touchingBox(e.getPosition(),e.getWidth(), e.getHeight());
     }
 
-    public void mobCollision(List<BoxGameEntity> mobs){
-        for(BoxGameEntity e:mobs){
+    public void mobCollision(List<GameMob> mobs){
+        for(GameMob e:mobs){
             if(touchingEntity(e)){
                 if(e==this) continue;
                 onMobCollision(e);
@@ -176,7 +186,7 @@ public abstract class BoxGameEntity extends BoxEntity {
         }
     }
 
-    protected void onMobCollision(BoxGameEntity e) {
+    protected void onMobCollision(GameMob e) {
         Random r = new Random();
         if(e.getCenterPosition().equals(getCenterPosition())){
             getLastPosition().set(getPosition());

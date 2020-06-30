@@ -7,16 +7,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 import com.hirshi001.billions.Game;
-import com.hirshi001.billions.game.GameApplication;
 import com.hirshi001.billions.gamepieces.PositionComparator;
 import com.hirshi001.billions.gamepieces.Positionable;
-import com.hirshi001.billions.gamepieces.entities.BoxGameEntity;
+import com.hirshi001.billions.gamepieces.entities.GameMob;
 import com.hirshi001.billions.gamepieces.items.ItemEntity;
 import com.hirshi001.billions.gamepieces.projecticles.GameProjectile;
 import com.hirshi001.billions.gamepieces.structures.StructureTile;
 import com.hirshi001.billions.registry.Block;
 import com.hirshi001.billions.registry.Registry;
-import com.hirshi001.billions.gamepieces.structures.Structure;
+import com.hirshi001.billions.gamepieces.structures.GameStructure;
 import com.hirshi001.billions.util.tiles.TileIter;
 
 import java.util.ArrayList;
@@ -30,12 +29,12 @@ public class Field implements Disposable {
 
     private int rows, cols;
 
-    private int[][] tiles;
+    private short[][] tiles;
     private StructureTile[][] structureTiles;
 
-    private final List<BoxGameEntity> mobs = new LinkedList<>();
-    private final Queue<BoxGameEntity> mobsRemove = new LinkedList<>();
-    private final Queue<BoxGameEntity> mobsAdd = new LinkedList<>();
+    private final List<GameMob> mobs = new LinkedList<>();
+    private final Queue<GameMob> mobsRemove = new LinkedList<>();
+    private final Queue<GameMob> mobsAdd = new LinkedList<>();
 
     private final List<GameProjectile> projectiles = new LinkedList<>();
     private final Queue<GameProjectile> projectilesRemove = new LinkedList<>();
@@ -46,22 +45,22 @@ public class Field implements Disposable {
     private final Queue<ItemEntity> itemsRemove = new LinkedList<>();
     private final Queue<ItemEntity> itemsAdd = new LinkedList<>();
 
-    private final List<Structure> structures = new LinkedList<>();
-    private final Queue<Structure> structuresRemove = new LinkedList<>();
-    private final Queue<Structure> structuresAdd = new LinkedList<>();
+    private final List<GameStructure> structures = new LinkedList<>();
+    private final Queue<GameStructure> structuresRemove = new LinkedList<>();
+    private final Queue<GameStructure> structuresAdd = new LinkedList<>();
 
-    private final ArrayList<Positionable> positionables = new ArrayList<>();
+    private final ArrayList<Positionable> positionables = new ArrayList<>(3000);
 
     private final PositionComparator positionComparator = new PositionComparator();
 
     private Game game;
-    private BoxGameEntity mainPlayer;
+    private GameMob mainPlayer;
 
 
     public Field(int rows, int cols){
         this.rows = rows;
         this.cols = cols;
-        tiles = new int[rows][cols];
+        tiles = new short[rows][cols];
         structureTiles = new StructureTile[rows][cols];
         int i, j;
         for(i=0;i<rows;i++){
@@ -72,9 +71,9 @@ public class Field implements Disposable {
         }
     }
 
-    public List<BoxGameEntity> getMobsList(){return mobs;}
-    public BoxGameEntity getMainPlayer(){return mainPlayer;}
-    public void setMainPlayer(BoxGameEntity m){
+    public List<GameMob> getMobsList(){return mobs;}
+    public GameMob getMainPlayer(){return mainPlayer;}
+    public void setMainPlayer(GameMob m){
         mainPlayer = m;
     }
 
@@ -89,14 +88,14 @@ public class Field implements Disposable {
     }
 
 
-    public Field setTiles(int[][] tiles){
+    public Field setTiles(short[][] tiles){
         this.tiles = tiles;
         return this;
     }
-    public int[][] getTiles(){return tiles;}
+    public short[][] getTiles(){return tiles;}
     public StructureTile[][] getStructureTiles(){return structureTiles;}
 
-    private boolean safeChange(int row, int col, int val){
+    private boolean safeChange(int row, int col, short val){
         if(row>=0 && row<rows && col>=0 && col<cols){
             tiles[row][col]=val;
             return true;
@@ -113,7 +112,7 @@ public class Field implements Disposable {
     private void updateEntities(){
         updateMobs();
         updateProjectiles();
-        for(Structure s:structures){ s.update(); }
+        for(GameStructure s:structures){ s.update(); }
         for(ItemEntity e:items){ e.updateBoxEntity(); }
 
 
@@ -124,22 +123,19 @@ public class Field implements Disposable {
         change+=handleItems();
         change+=handleStructures();
 
-        if(change>=5) {
+        if(true) {
             Collections.sort(positionables, positionComparator);
         }
 
-        else{
-            bubbleSort(positionables, positionComparator);
-        }
 
 
     }
 
     private void updateMobs(){
-        for(BoxGameEntity m:mobs){ m.updateBoxEntity(); }
-        for(BoxGameEntity m:mobs){ m.tileCollision(); }
-        for(BoxGameEntity m:mobs){ m.mobCollision(mobs); }
-        for(BoxGameEntity m:mobs){ m.itemTouching(items); }
+        for(GameMob m:mobs){ m.updateBoxEntity(); }
+        for(GameMob m:mobs){ m.tileCollision(); }
+        for(GameMob m:mobs){ m.mobCollision(mobs); }
+        for(GameMob m:mobs){ m.itemTouching(items); }
     }
     private void updateProjectiles(){
         for(GameProjectile p:projectiles){p.updateBoxEntity();}
@@ -148,7 +144,7 @@ public class Field implements Disposable {
 
     private int handleMobs(){
         int change = 0;
-        BoxGameEntity e;
+        GameMob e;
         change+=mobsAdd.size();
         while (!mobsAdd.isEmpty()) {
             e = mobsAdd.remove();
@@ -207,7 +203,7 @@ public class Field implements Disposable {
     }
     private int handleStructures(){
         int change = 0;
-        Structure s;
+        GameStructure s;
         Vector2 pos;
         boolean cont;
         change+=structuresAdd.size();
@@ -280,16 +276,12 @@ public class Field implements Disposable {
         }
     }
 
-    public void removeMob(BoxGameEntity m){
-        synchronized (mobsRemove){
-            mobsRemove.add(m);
-        }
+    public void removeMob(GameMob m){
+        mobsRemove.add(m);
     }
-    public void addMob(BoxGameEntity m){
-        synchronized (mobsAdd){
-            mobsAdd.add(m);
-            m.setField(this);
-        }
+    public void addMob(GameMob m){
+        mobsAdd.add(m);
+        m.setField(this);
     }
 
     public void addProjectile(GameProjectile p){
@@ -306,15 +298,11 @@ public class Field implements Disposable {
 
     }
 
-    public void addStructure(Structure s){
-        synchronized (structuresAdd){
-            structuresAdd.add(s);
-        }
+    public void addStructure(GameStructure s){
+        structuresAdd.add(s);
     }
-    public void removeStructure(Structure s){
-        synchronized (structuresRemove){
-            structuresRemove.add(s);
-        }
+    public void removeStructure(GameStructure s){
+        structuresRemove.add(s);
     }
 
     public void draw(SpriteBatch batch){

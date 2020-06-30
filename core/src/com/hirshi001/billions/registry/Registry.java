@@ -10,8 +10,8 @@ import java.util.List;
 public class Registry {
 
     public static final Block
-    GRASS = new Block(0).setTexture("generic-rpg-tile01.png").collidable(false),
-    WALL = new Block(1).setTexture("generic-rpg-tile02.png").collidable(true);
+    GRASS = new Block((short)0).setTexture("generic-rpg-tile01.png").collidable(false),
+    WALL = new Block((short)1).setTexture("generic-rpg-tile02.png").collidable(true);
 
     public static final List<Block> BLOCKS = new ArrayList<>();
     public static final List<Disposable> TODISPOSE = new LinkedList<>();

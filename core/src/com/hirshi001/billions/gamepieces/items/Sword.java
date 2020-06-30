@@ -3,7 +3,7 @@ package com.hirshi001.billions.gamepieces.items;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.hirshi001.billions.gamepieces.entities.BoxGameEntity;
+import com.hirshi001.billions.gamepieces.entities.GameMob;
 import com.hirshi001.billions.registry.Block;
 import com.hirshi001.billions.registry.Registry;
 
@@ -23,12 +23,12 @@ public class Sword extends ItemEntity {
     }
 
     @Override
-    public void onDropped(BoxGameEntity e) {
+    public void onDropped(GameMob e) {
 
     }
 
     @Override
-    public void onPicked(BoxGameEntity e) {
+    public void onPicked(GameMob e) {
 
     }
 

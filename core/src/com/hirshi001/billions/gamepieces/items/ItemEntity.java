@@ -3,15 +3,15 @@ package com.hirshi001.billions.gamepieces.items;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.hirshi001.billions.gamepieces.BoxEntity;
-import com.hirshi001.billions.gamepieces.entities.BoxGameEntity;
+import com.hirshi001.billions.gamepieces.entities.GameMob;
 
 public abstract class ItemEntity extends BoxEntity {
     public ItemEntity(Vector2 position) {
         super(position);
     }
 
-    public abstract void onDropped(BoxGameEntity e);
-    public abstract void onPicked(BoxGameEntity e);
+    public abstract void onDropped(GameMob e);
+    public abstract void onPicked(GameMob e);
 
     @Override
     public void draw(Vector2 bottomLeft, Vector2 topRight, SpriteBatch b){

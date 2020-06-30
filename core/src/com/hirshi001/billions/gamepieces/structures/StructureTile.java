@@ -3,7 +3,7 @@ package com.hirshi001.billions.gamepieces.structures;
 public class StructureTile {
 
     private boolean isStructure;
-    private Structure structure;
+    private GameStructure structure;
 
     private boolean isCollidable;
     private boolean isDoor;
@@ -12,7 +12,7 @@ public class StructureTile {
 
     }
 
-    public StructureTile structure(Structure s){
+    public StructureTile structure(GameStructure s){
         isStructure = true;
         structure = s;
         return this;
@@ -27,7 +27,7 @@ public class StructureTile {
         return this;
     }
 
-    public Structure getStructure(){
+    public GameStructure getStructure(){
         return structure;
     }
 

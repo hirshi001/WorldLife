@@ -1,9 +1,5 @@
 package com.hirshi001.billions.util.tiles;
 
-import com.badlogic.gdx.math.Vector2;
-import com.hirshi001.billions.registry.Block;
-import com.hirshi001.billions.registry.Registry;
-
 public class TileIter {
 
     public int startX, startY;
@@ -15,7 +11,7 @@ public class TileIter {
         this.tiles = tiles;
     }
 
-    public static TileIter createTileIterRelativeTo(int[][] tiles, float startX, float startY, float endX, float endY){
+    public static TileIter createTileIterRelativeTo(short[][] tiles, float startX, float startY, float endX, float endY){
         if(startX<0) startX=0;
         if(startY<0) startY=0;
         if(endX>tiles[0].length-1) endX=tiles[0].length-1;

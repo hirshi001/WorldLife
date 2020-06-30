@@ -16,13 +16,15 @@ import com.hirshi001.billions.registry.Registry;
 import com.hirshi001.billions.util.animation.AnimationCycle;
 import com.hirshi001.billions.util.animation.Animator;
 
-public class Player extends BoxGameEntity {
+import java.util.List;
+
+public class Player extends GameMob {
 
     public static final float WIDTH = 12f/ Block.BLOCKWIDTH, HEIGHT = 12f/Block.BLOCKHEIGHT;
     private static Texture t1, t2;
 
     private int lastShot = 0;
-    private int lastShotLim = 20;
+    private int lastShotLim = 10;
 
     static{
         t1 = new Texture("textures/entities/player/player1.png");
@@ -92,8 +94,10 @@ public class Player extends BoxGameEntity {
         }
         if(lastShot==lastShotLim && Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
             lastShot = 0;
-            Vector3 dir = field.getGame().getCamera().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(),0));
-            getField().addProjectile(new Fireball(getPosition().cpy(),getCenterPosition().scl(Block.BLOCKWIDTH, Block.BLOCKHEIGHT).sub(dir.x, dir.y).rotate(180)));
+            Vector3 dir3 = field.getGame().getCamera().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(),0));
+            Vector2 dir = getCenterPosition().scl(Block.BLOCKWIDTH, Block.BLOCKHEIGHT).sub(dir3.x, dir3.y).rotate(180);
+
+            getField().addProjectile(new Fireball(getCenterPosition().add(dir.nor().scl(1.15f)),dir).shiftByCenter());
         }
     }
 
@@ -108,6 +112,16 @@ public class Player extends BoxGameEntity {
                 newField.setMainPlayer(this);
                 currentField.getGame().setField(newField);
                 getPosition().set(tile.getStructure().entrancePosition());
+                List<GameMob> mobs = currentField.getMobsList();
+                for(GameMob m:mobs){
+                    if(m instanceof Slime){
+                        if(((Slime) m).getMaster()==this){
+                            currentField.removeMob(m);
+                            newField.addMob(m);
+                            m.getPosition().set(tile.getStructure().entrancePosition());
+                        }
+                    }
+                }
                 return true;
             }
         }
@@ -115,7 +129,7 @@ public class Player extends BoxGameEntity {
     }
 
     @Override
-    protected void onMobCollision(BoxGameEntity e) {
+    protected void onMobCollision(GameMob e) {
         if(e instanceof Slime){
             Slime s = (Slime)e;
             if(s.getMaster()==this){return;}

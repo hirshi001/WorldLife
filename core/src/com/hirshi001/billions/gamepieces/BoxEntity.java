@@ -1,9 +1,7 @@
 package com.hirshi001.billions.gamepieces;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.hirshi001.billions.field.Field;
-import com.hirshi001.billions.gamepieces.entities.BoxGameEntity;
 
 public abstract class BoxEntity implements Positionable {
 
@@ -13,6 +11,9 @@ public abstract class BoxEntity implements Positionable {
     public BoxEntity(Vector2 position){
         this.position = position;
     }
+    public BoxEntity(Vector2 position, boolean isCenter){
+        this.position = position.sub(getWidth()/2, getHeight()/2);
+    }
 
     @Override
     public Vector2 getLayerPosition() {return position; }
@@ -20,6 +21,11 @@ public abstract class BoxEntity implements Positionable {
     public BoxEntity setField(Field f){this.field = f; return this;}
     public Field getField(){return this.field;}
     public Vector2 getPosition(){return position;}
+
+    public BoxEntity shiftByCenter(){
+        getPosition().sub(getWidth()/2, getHeight()/2);
+        return this;
+    }
 
     public abstract void updateBoxEntity();
 

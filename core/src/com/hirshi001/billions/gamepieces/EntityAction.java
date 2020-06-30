@@ -1,9 +1,9 @@
 package com.hirshi001.billions.gamepieces;
 
-import com.hirshi001.billions.gamepieces.entities.BoxGameEntity;
+import com.hirshi001.billions.gamepieces.entities.GameMob;
 
 public abstract class EntityAction {
 
-    public abstract void onAction(BoxGameEntity e);
+    public abstract void onAction(GameMob e);
 
 }

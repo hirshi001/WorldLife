@@ -12,10 +12,10 @@ import com.hirshi001.billions.util.animation.Animator;
 
 import java.util.List;
 
-public class Slime extends BoxGameEntity {
+public class Slime extends GameMob {
 
     public static final float WIDTH = 16f/Block.BLOCKWIDTH, HEIGHT = 16f/Block.BLOCKHEIGHT;
-    private BoxGameEntity master;
+    private GameMob master;
     private static Texture t1, t2;
 
     static{
@@ -32,18 +32,17 @@ public class Slime extends BoxGameEntity {
     private boolean facingRight = true;
     private int count = 0;
 
-    public Slime(Vector2 position, BoxGameEntity master) {
+    public Slime(Vector2 position, GameMob master) {
         super(position);
         this.master = master;
     }
-
 
     @Override
     public void itemTouching(List<ItemEntity> items) {
         return;
     }
 
-    public BoxGameEntity getMaster(){return master;}
+    public GameMob getMaster(){return master;}
 
     @Override
     public float getWidth() {

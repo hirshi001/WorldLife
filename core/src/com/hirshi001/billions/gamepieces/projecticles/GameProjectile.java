@@ -3,8 +3,8 @@ package com.hirshi001.billions.gamepieces.projecticles;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.hirshi001.billions.gamepieces.BoxEntity;
-import com.hirshi001.billions.gamepieces.entities.BoxGameEntity;
-import com.hirshi001.billions.gamepieces.structures.Structure;
+import com.hirshi001.billions.gamepieces.entities.GameMob;
+import com.hirshi001.billions.gamepieces.structures.GameStructure;
 
 import java.util.List;
 
@@ -28,17 +28,22 @@ public abstract class GameProjectile extends BoxEntity {
     }
 
 
-    public void touchingMob(List<BoxGameEntity> mobs){
-        for(BoxGameEntity m:mobs){
+    public void touchingMob(List<GameMob> mobs){
+        for(GameMob m:mobs){
             if(touchingBox(m.getPosition(),m.getWidth(), m.getHeight())){
                 onTouchingMob(m);
             }
         }
     }
 
-    public void touchingStructure(List<Structure> structures){
+    @Override
+    public GameProjectile shiftByCenter() {
+        return (GameProjectile)super.shiftByCenter();
+    }
+
+    public void touchingStructure(List<GameStructure> structures){
 
     }
 
-    public abstract void onTouchingMob(BoxGameEntity m);
+    public abstract void onTouchingMob(GameMob m);
 }

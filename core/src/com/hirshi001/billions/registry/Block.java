@@ -11,13 +11,13 @@ public class Block implements Disposable {
     public static final String TEXTURE_PATH = "rpg-pack/tiles/";
     private Texture t;
     private boolean collidable;
-    private final int id;
+    private final short id;
 
-    public Block(int id){
+    public Block(short id){
         this.id = id;
     }
 
-    public int getId(){
+    public short getId(){
         return id;
     }
 

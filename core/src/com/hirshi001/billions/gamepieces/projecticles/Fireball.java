@@ -3,7 +3,7 @@ package com.hirshi001.billions.gamepieces.projecticles;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.hirshi001.billions.gamepieces.entities.BoxGameEntity;
+import com.hirshi001.billions.gamepieces.entities.GameMob;
 import com.hirshi001.billions.registry.Block;
 import com.hirshi001.billions.registry.Registry;
 
@@ -11,7 +11,7 @@ public class Fireball extends GameProjectile {
 
     public static final Texture t = new Texture("textures/entities/projectiles/fireball/fireball.png");
     private Vector2 angle;
-    private float speed = 0.1f;
+    private float speed = 0.3f;
     static{
         Registry.addDisposable(t);
     }
@@ -32,7 +32,7 @@ public class Fireball extends GameProjectile {
     }
 
     @Override
-    public void onTouchingMob(BoxGameEntity m) {
+    public void onTouchingMob(GameMob m) {
 
     }
 
