@@ -23,6 +23,7 @@ Right Click and Drag to move camera around the field. (This automatically turns 
 <br>
 
 MODDIFICATIONS:
+NOTHING IN THE PROJECT IS GAURENTEED TO BE THREAD SAFE. ASSUME NOTHING IS THREAD SAFE.
 If you want to mod the game, good luck cause there are no tutorials because of time restraints, however once you understand the code, creating mods for the game is very, very simple. I coded the project the way I did just mainly for creating mods. 
 While modding the game, there are a few things to note.
 
