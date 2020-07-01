@@ -21,6 +21,9 @@ public class TileIter {
         int stY = (int)Math.floor(startY);
         int enX = (int)Math.floor(endX);
         int enY = (int)Math.floor(endY);
+        if(enY+1 - stY<0 || enX+1-stX<0){
+            return new TileIter(stX, stY, new int[][]{});
+        }
         int[][] newTiles = new int[enY+1 - stY][enX+1-stX];
 
         int i, j;

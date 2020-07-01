@@ -2,6 +2,7 @@ package com.hirshi001.billions.gamepieces.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.hirshi001.billions.field.Field;
 import com.hirshi001.billions.gamepieces.items.ItemEntity;
 import com.hirshi001.billions.gamepieces.projecticles.Fireball;
+import com.hirshi001.billions.gamepieces.projecticles.GameProjectile;
 import com.hirshi001.billions.gamepieces.structures.StructureTile;
 import com.hirshi001.billions.registry.Block;
 import com.hirshi001.billions.registry.Registry;
@@ -104,7 +106,7 @@ public class Player extends GameMob {
     }
 
     @Override
-    public GameMob applyDamage(int damage, Object source) {
+    public GameMob applyDamage(int damage, GameProjectile source) {
         return this;
     }
 
@@ -119,6 +121,12 @@ public class Player extends GameMob {
                 newField.setMainPlayer(this);
                 currentField.getGame().setField(newField);
                 getPosition().set(tile.getStructure().entrancePosition());
+                getField().getGame().getInputHandler().getScreenMover().setIsCameraFollow(true);
+                /*
+                OrthographicCamera cam = getField().getGame().getCamera();
+                cam.position.set(getPosition().x, getPosition().y,0);
+
+                 */
                 List<GameMob> mobs = currentField.getMobsList();
                 for(GameMob m:mobs){
                     if(m instanceof Slime){

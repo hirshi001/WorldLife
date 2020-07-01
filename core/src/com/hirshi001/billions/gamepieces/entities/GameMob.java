@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.hirshi001.billions.field.Field;
 import com.hirshi001.billions.gamepieces.BoxEntity;
 import com.hirshi001.billions.gamepieces.items.ItemEntity;
+import com.hirshi001.billions.gamepieces.projecticles.GameProjectile;
 import com.hirshi001.billions.gamepieces.structures.StructureTile;
 import com.hirshi001.billions.registry.Registry;
 
@@ -32,10 +33,23 @@ public abstract class GameMob extends BoxEntity {
     public Vector2 getCenterPosition(){return getPosition().cpy().add(getWidth()/2f, getHeight()/2f);}
     public Vector2 getCenterPosition(Vector2 v){return v.cpy().add(getWidth()/2f, getHeight()/2f);}
 
-    public GameMob applyDamage(int damage, Object source){
+    public GameMob applyDamage(int damage){
         getField().removeMob(this);
         return this;
     }
+
+
+    public GameMob applyDamage(int damage, GameProjectile source){
+        getField().removeMob(this);
+        return this;
+    }
+
+
+    public GameMob applyDamage(int damage, GameMob source){
+        getField().removeMob(this);
+        return this;
+    }
+
 
     @Override
     public GameMob shiftByCenter() {

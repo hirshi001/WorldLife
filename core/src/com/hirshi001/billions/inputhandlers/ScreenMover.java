@@ -52,4 +52,8 @@ public class ScreenMover extends InputAdapter {
     public boolean isCameraFollow() {
         return cameraFollow;
     }
+    public ScreenMover setIsCameraFollow(boolean isCameraFollow) {
+        this.cameraFollow = isCameraFollow;
+        return this;
+    }
 }
