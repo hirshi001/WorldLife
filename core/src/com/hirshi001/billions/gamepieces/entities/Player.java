@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.hirshi001.billions.field.Field;
 import com.hirshi001.billions.gamepieces.items.ItemEntity;
+import com.hirshi001.billions.gamepieces.projecticles.Bullet;
 import com.hirshi001.billions.gamepieces.projecticles.Fireball;
 import com.hirshi001.billions.gamepieces.projecticles.GameProjectile;
 import com.hirshi001.billions.gamepieces.structures.StructureTile;
@@ -98,9 +99,9 @@ public class Player extends GameMob {
         if(lastShot==lastShotLim && Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
             lastShot = 0;
             Vector3 dir3 = field.getGame().getCamera().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(),0));
-            Vector2 dir = getCenterPosition().scl(Block.BLOCKWIDTH, Block.BLOCKHEIGHT).sub(dir3.x, dir3.y).rotate(180);
+            Vector2 dir = getCenterPosition().scl(Block.BLOCKWIDTH, Block.BLOCKHEIGHT).sub(dir3.x, dir3.y).rotate(180+(int)(Math.random()*20)-10);
 
-            getField().addProjectile(new Fireball(getCenterPosition().add(dir.nor().scl(1.15f)),dir).shiftByCenter().source(this));
+            getField().addProjectile(new Bullet(getCenterPosition().add(dir.nor().scl(1.15f)),dir).shiftByCenter().source(this));
 
         }
     }
