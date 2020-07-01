@@ -1,6 +1,10 @@
 # NewGameMaker
 This is a new project I am making for PlatHacks. This is a working base project that is very easy for other people to modify and make their very own unique games! This project uses Libgdx so if you know how to use Libgdx, you can do much more things that maybe I haven't even intended to be possible. If you don't know how to use Libgdx, thats fine as well. Very little use of the Libgdx library is needed to make modifications.
 
+Link to youtube video: https://youtu.be/Q8lvFCoBBXE
+
+Link to a small game I made with this mentioned in youtube video: https://drive.google.com/file/d/1w08dXWVDM5nCaaDCePyHeYk6UA-vuxd3/view?usp=sharing
+
 To play the game, click on the desktop-1.0.jar file and download it.
 You can run it either by double clicking it or through the terminal.
 
