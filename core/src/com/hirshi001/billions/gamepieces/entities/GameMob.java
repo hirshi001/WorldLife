@@ -18,6 +18,7 @@ public abstract class GameMob extends BoxEntity {
 
     private int lastItemTouchingCheck = 0;
     private int itemTouchingCheckLim = 20;
+    private int health = 20;
 
     public GameMob(final Vector2 position){
         super(position);
@@ -34,20 +35,21 @@ public abstract class GameMob extends BoxEntity {
     public Vector2 getCenterPosition(Vector2 v){return v.cpy().add(getWidth()/2f, getHeight()/2f);}
 
     public GameMob applyDamage(int damage){
-        getField().removeMob(this);
+        health-=damage;
+        if(health<0){
+            getField().removeMob(this);
+        }
         return this;
     }
 
 
     public GameMob applyDamage(int damage, GameProjectile source){
-        getField().removeMob(this);
-        return this;
+        return applyDamage(damage);
     }
 
 
     public GameMob applyDamage(int damage, GameMob source){
-        getField().removeMob(this);
-        return this;
+        return applyDamage(damage);
     }
 
 

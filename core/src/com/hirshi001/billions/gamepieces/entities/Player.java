@@ -2,7 +2,6 @@ package com.hirshi001.billions.gamepieces.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,7 +10,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.hirshi001.billions.field.Field;
 import com.hirshi001.billions.gamepieces.items.ItemEntity;
 import com.hirshi001.billions.gamepieces.projecticles.Bullet;
-import com.hirshi001.billions.gamepieces.projecticles.Fireball;
 import com.hirshi001.billions.gamepieces.projecticles.GameProjectile;
 import com.hirshi001.billions.gamepieces.structures.StructureTile;
 import com.hirshi001.billions.registry.Block;
@@ -19,7 +17,6 @@ import com.hirshi001.billions.registry.Registry;
 import com.hirshi001.billions.util.animation.AnimationCycle;
 import com.hirshi001.billions.util.animation.Animator;
 
-import java.awt.event.ActionListener;
 import java.util.List;
 
 public class Player extends GameMob {
@@ -62,13 +59,10 @@ public class Player extends GameMob {
             t.flip(true, false);
         }
         batch.draw(t, (getPosition().x+getWidth()/2)*Block.BLOCKWIDTH-t.getRegionWidth()/2f, (getPosition().y+getHeight()/2)*Block.BLOCKHEIGHT-t.getRegionHeight()/2f,t.getRegionWidth()/2f, t.getRegionHeight()/2f, t.getRegionWidth(), t.getRegionHeight(),1f,1f,0f);
-
     }
 
     @Override
-    public void onItemTouching(ItemEntity i) {
-        System.out.println("EAAE");
-    }
+    public void onItemTouching(ItemEntity i){ }
 
     private int count = 0;
 
