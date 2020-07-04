@@ -1,11 +1,11 @@
-package com.hirshi001.billions;
+package com.hirshi001.billions.game;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 import com.hirshi001.billions.field.Field;
-import com.hirshi001.billions.game.GameApplicationAdapter;
+import com.hirshi001.billions.gameadapter.GameApplicationAdapter;
 import com.hirshi001.billions.inputhandlers.InputHandler;
 import com.hirshi001.billions.registry.Block;
 import com.hirshi001.billions.util.camera.CameraStyles;
@@ -19,10 +19,7 @@ public class Game implements Disposable {
 
     private GameApplicationAdapter application;
 
-    public Game(OrthographicCamera camera, Field f){
-        this.camera = camera;
-        setField(f);
-    }
+    public Game(){  }
 
     public Game setGameApplicationAdapter(GameApplicationAdapter application){
         this.application = application;

@@ -9,11 +9,29 @@ import com.hirshi001.billions.util.camera.CameraStyles;
 
 public class ScreenMover extends InputAdapter {
 
+    /**
+     * The input handler which contains the game object which this ScreenMover will modify
+     */
     private InputHandler handler;
 
-    private int lastX, lastY;
+    /**
+     * The last x position of the mouse when the Right button is pressed
+     */
+    private int lastX;
+    /**
+     * The last y position of the mouse when the Right button is pressed
+     */
+    private int lastY;
+
+    /**
+     * whether or not the camera will follow the main player.
+     */
     private boolean cameraFollow = true;
 
+    /**
+     *
+     * @param handler the InputHandler which contains a reference to the game object which will be used by this object.
+     */
     public ScreenMover(InputHandler handler){
         this.handler = handler;
     }
@@ -21,8 +39,8 @@ public class ScreenMover extends InputAdapter {
     @Override
     public boolean keyDown(int keycode) {
         if(keycode==Input.Keys.SHIFT_LEFT && !isCameraFollow()){
-            handler.getCamera().position.x = handler.getField().getMainPlayer().getCenterPosition().x*Block.BLOCKWIDTH;
-            handler.getCamera().position.y = handler.getField().getMainPlayer().getCenterPosition().y*Block.BLOCKHEIGHT;
+            handler.getGame().getCamera().position.x = handler.getGame().getField().getMainPlayer().getCenterPosition().x*Block.BLOCKWIDTH;
+            handler.getGame().getCamera().position.y = handler.getGame().getField().getMainPlayer().getCenterPosition().y*Block.BLOCKHEIGHT;
         }
         if(keycode==Input.Keys.R){
             cameraFollow = !cameraFollow;
@@ -32,6 +50,7 @@ public class ScreenMover extends InputAdapter {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        //used for updating the camera position in the touchDragged method
         lastX = screenX;
         lastY = screenY;
         return false;
@@ -39,19 +58,33 @@ public class ScreenMover extends InputAdapter {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
+        //Moves the camera in the same direction as the mouse to "drag the field"
         if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)){
-            handler.getCamera().translate(lastX - screenX, screenY-lastY);
+            handler.getGame().getCamera().translate(lastX - screenX, screenY-lastY);
             lastX = screenX;
             lastY = screenY;
+            //sets it so the camera will not follow the player anymore
             cameraFollow = false;
             return true;
         }
         return false;
     }
 
+    /**
+     *
+     * @return whether the camera is following the player
+     */
     public boolean isCameraFollow() {
         return cameraFollow;
     }
+
+    /**
+     *
+     * @param isCameraFollow whether the camera should follow the main player or not.
+     *                       If true, it will follow. If false, it will not follow.
+     *
+     * @return returns itself for chaining
+     */
     public ScreenMover setIsCameraFollow(boolean isCameraFollow) {
         this.cameraFollow = isCameraFollow;
         return this;

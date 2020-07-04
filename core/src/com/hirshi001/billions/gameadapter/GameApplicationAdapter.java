@@ -1,9 +1,9 @@
-package com.hirshi001.billions.game;
+package com.hirshi001.billions.gameadapter;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
-import com.hirshi001.billions.Game;
+import com.hirshi001.billions.game.Game;
 
 public abstract class GameApplicationAdapter implements Disposable {
 

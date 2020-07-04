@@ -1,30 +1,49 @@
 package com.hirshi001.billions.inputhandlers;
 
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.hirshi001.billions.field.Field;
+import com.hirshi001.billions.game.Game;
 
+/**
+ * This object is in charge of handling user inputs such as key presses and button presses.
+ */
 public class InputHandler extends InputMultiplexer {
 
-    private OrthographicCamera camera;
-    private Field field;
+    /**
+     * Reference to the game object which will be used by other InputAdapters in the pipeline.
+     */
+    private Game game;
+    /**
+     * Reference to the ScreenMover obejct which is in charge of handling the movement of the camera
+     */
     private ScreenMover screenMover;
 
-    public InputHandler(OrthographicCamera camera, Field field){
-        this.camera = camera;
-        this.field = field;
+    public InputHandler(){
         screenMover = new ScreenMover(this);
         addProcessor(screenMover);
     }
 
-    public OrthographicCamera getCamera(){
-        return camera;
+    /**
+     *
+     * @param game sets the game object which all InputHandlers in the pipeline will use.
+     * @return a reference to this object for chaining.
+     */
+    public InputHandler setGame(Game game){
+        this.game = game;
+        return this;
     }
 
-    public Field getField(){
-        return field;
+    /**
+     *
+     * @return the game object which all InputHandlers in the pipeline uses
+     */
+    public Game getGame(){
+        return game;
     }
 
+    /**
+     *
+     * @return the ScreenMover object in charge of handling camera position.
+     */
     public ScreenMover getScreenMover() {
         return screenMover;
     }

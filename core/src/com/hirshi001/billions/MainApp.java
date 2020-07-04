@@ -5,10 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.hirshi001.billions.game.GameApplication;
+import com.hirshi001.billions.gameadapter.GameApplication;
 import com.hirshi001.billions.registry.Registry;
 
-import javax.swing.JFrame;
 import java.awt.Dimension;
 
 public class MainApp extends ApplicationAdapter{

@@ -1,10 +1,11 @@
-package com.hirshi001.billions.game;
+package com.hirshi001.billions.gameadapter;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.hirshi001.billions.Game;
+import com.hirshi001.billions.game.Game;
 import com.hirshi001.billions.field.Field;
+import com.hirshi001.billions.game.GameBuilder;
 import com.hirshi001.billions.gamepieces.entities.GameMob;
 import com.hirshi001.billions.gamepieces.entities.Player;
 import com.hirshi001.billions.gamepieces.entities.Slime;
@@ -31,7 +32,7 @@ public class GameApplication extends GameApplicationAdapter{
         for(int i=0;i<50;i++) field.addItem(new Sword(new Vector2((int)(Math.random()*(field.getCols()-3)),(int)(Math.random()*(field.getRows()-3)))));
         field.addProjectile(new Fireball(mainPlayer.getPosition().cpy(),new Vector2(1,1)));
 
-        Game g = new Game(getCamera(), field).setInputHandler(new InputHandler(getCamera(), field)).setGameApplicationAdapter(this);
+        Game g = new GameBuilder(getCamera(), field).inputHandler(new InputHandler()).gameApplicationAdapter(this).build();
         setGame(g);
         Gdx.input.setInputProcessor(getGame().getInputHandler());
     }

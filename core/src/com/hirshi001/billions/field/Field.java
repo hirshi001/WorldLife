@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
-import com.hirshi001.billions.Game;
+import com.hirshi001.billions.game.Game;
 import com.hirshi001.billions.gamepieces.PositionComparator;
 import com.hirshi001.billions.gamepieces.Positionable;
 import com.hirshi001.billions.gamepieces.entities.GameMob;
