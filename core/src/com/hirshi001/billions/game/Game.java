@@ -14,7 +14,6 @@ public class Game implements Disposable {
 
     private Field field;
     private SpriteBatch spriteBatch;
-    private OrthographicCamera camera;
     private InputHandler inputHandler;
 
     private GameApplicationAdapter application;
@@ -40,11 +39,6 @@ public class Game implements Disposable {
         return this;
     }
     public Field getField(){return field;}
-    public Game setCamera(OrthographicCamera camera){
-        this.camera = camera;
-        return this;
-    }
-    public OrthographicCamera getCamera(){return this.camera;}
     public Game setInputHandler(InputHandler handler){
         this.inputHandler = handler;
         return this;
@@ -63,16 +57,17 @@ public class Game implements Disposable {
 
     private void handleCameraPosition(){
         if(getInputHandler().getScreenMover().isCameraFollow()){
-            float startX = getCamera().viewportWidth/2;
-            float startY = getCamera().viewportHeight/2;
+            OrthographicCamera camera = getGameApplicationAdapter().getCamera();
+            float startX = camera.viewportWidth/2;
+            float startY = camera.viewportHeight/2;
             float width = getField().getCols()*Block.BLOCKWIDTH-camera.viewportWidth;
             float height = getField().getRows()*Block.BLOCKHEIGHT-camera.viewportHeight;
 
             //to make camera movement smooth when the player is near the edge of the map because of boundry.
 
             Vector2 pos = CameraStyles.boundary(getField().getMainPlayer().getCenterPosition().scl(Block.BLOCKWIDTH,Block.BLOCKHEIGHT),startX,startY,width,height);
-            CameraStyles.lerpToTarget(getCamera().position,pos,0.1f);
-            CameraStyles.boundary(getCamera().position,startX, startY,width,height);
+            CameraStyles.lerpToTarget(camera.position,pos,0.1f);
+            CameraStyles.boundary(camera.position,startX, startY,width,height);
         }
     }
 

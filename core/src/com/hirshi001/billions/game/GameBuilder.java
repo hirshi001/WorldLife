@@ -7,13 +7,11 @@ import com.hirshi001.billions.inputhandlers.InputHandler;
 
 public class GameBuilder {
 
-    private OrthographicCamera camera;
     private Field field;
     private InputHandler handler;
     private GameApplicationAdapter adapter;
 
-    public GameBuilder(OrthographicCamera camera, Field field){
-        this.camera = camera;
+    public GameBuilder(Field field){
         this.field = field;
     }
 
@@ -32,7 +30,10 @@ public class GameBuilder {
     }
 
     public Game build(Game game){
-        game.setCamera(camera).setField(field).setInputHandler(handler).setGameApplicationAdapter(adapter);
+        game.setField(field).setInputHandler(handler).setGameApplicationAdapter(adapter);
+        handler.setGame(game);
+        field.setGame(game);
+        adapter.setGame(game);
         return game;
     }
 

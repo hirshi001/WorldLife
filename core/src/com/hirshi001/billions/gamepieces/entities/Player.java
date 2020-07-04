@@ -2,6 +2,7 @@ package com.hirshi001.billions.gamepieces.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -76,8 +77,10 @@ public class Player extends GameMob {
         mov.nor().scl(0.223f);
         getPosition().add(mov);
 
+        OrthographicCamera camera = getField().getGame().getGameApplicationAdapter().getCamera();
+
         Vector2 centerPos = getCenterPosition();
-        Vector3 screenPos = field.getGame().getCamera().project(new Vector3(centerPos.x*Block.BLOCKWIDTH, centerPos.y*Block.BLOCKHEIGHT, 0));
+        Vector3 screenPos = camera.project(new Vector3(centerPos.x*Block.BLOCKWIDTH, centerPos.y*Block.BLOCKHEIGHT, 0));
         facingRight = screenPos.x<Gdx.input.getX();
 
         count++;
@@ -92,7 +95,7 @@ public class Player extends GameMob {
         }
         if(lastShot==lastShotLim && Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
             lastShot = 0;
-            Vector3 dir3 = field.getGame().getCamera().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(),0));
+            Vector3 dir3 = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(),0));
             Vector2 dir = getCenterPosition().scl(Block.BLOCKWIDTH, Block.BLOCKHEIGHT).sub(dir3.x, dir3.y).rotate(180+(int)(Math.random()*20)-10);
 
             getField().addProjectile(new Bullet(getCenterPosition().add(dir.nor().scl(1.15f)),dir).shiftByCenter().source(this));
@@ -117,11 +120,8 @@ public class Player extends GameMob {
                 currentField.getGame().setField(newField);
                 getPosition().set(tile.getStructure().entrancePosition());
                 getField().getGame().getInputHandler().getScreenMover().setIsCameraFollow(true);
-                /*
-                OrthographicCamera cam = getField().getGame().getCamera();
-                cam.position.set(getPosition().x, getPosition().y,0);
 
-                 */
+
                 List<GameMob> mobs = currentField.getMobsList();
                 for(GameMob m:mobs){
                     if(m instanceof Slime){

@@ -32,7 +32,7 @@ public class GameApplication extends GameApplicationAdapter{
         for(int i=0;i<50;i++) field.addItem(new Sword(new Vector2((int)(Math.random()*(field.getCols()-3)),(int)(Math.random()*(field.getRows()-3)))));
         field.addProjectile(new Fireball(mainPlayer.getPosition().cpy(),new Vector2(1,1)));
 
-        Game g = new GameBuilder(getCamera(), field).inputHandler(new InputHandler()).gameApplicationAdapter(this).build();
+        Game g = new GameBuilder(field).inputHandler(new InputHandler()).gameApplicationAdapter(this).build();
         setGame(g);
         Gdx.input.setInputProcessor(getGame().getInputHandler());
     }

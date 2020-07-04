@@ -307,8 +307,7 @@ public class Field implements Disposable {
 
     public void draw(SpriteBatch batch){
         Vector3 bottomLeft = new Vector3(0, Gdx.graphics.getHeight(),0), topRight = new Vector3(Gdx.graphics.getWidth(),0,0);
-        if(getGame()==null) System.out.println("NULL");;
-        OrthographicCamera camera = getGame().getCamera();
+        OrthographicCamera camera = getGame().getGameApplicationAdapter().getCamera();
         camera.unproject(bottomLeft).scl(1f/Block.BLOCKWIDTH,1f/Block.BLOCKHEIGHT,1);
         camera.unproject(topRight).scl(1f/Block.BLOCKWIDTH,1f/Block.BLOCKHEIGHT,1);
 

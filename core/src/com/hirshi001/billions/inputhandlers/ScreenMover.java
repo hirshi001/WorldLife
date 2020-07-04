@@ -3,6 +3,7 @@ package com.hirshi001.billions.inputhandlers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.hirshi001.billions.registry.Block;
 import com.hirshi001.billions.util.camera.CameraStyles;
@@ -39,8 +40,9 @@ public class ScreenMover extends InputAdapter {
     @Override
     public boolean keyDown(int keycode) {
         if(keycode==Input.Keys.SHIFT_LEFT && !isCameraFollow()){
-            handler.getGame().getCamera().position.x = handler.getGame().getField().getMainPlayer().getCenterPosition().x*Block.BLOCKWIDTH;
-            handler.getGame().getCamera().position.y = handler.getGame().getField().getMainPlayer().getCenterPosition().y*Block.BLOCKHEIGHT;
+            OrthographicCamera camera = handler.getGame().getGameApplicationAdapter().getCamera();
+            camera.position.x = handler.getGame().getField().getMainPlayer().getCenterPosition().x*Block.BLOCKWIDTH;
+            camera.position.y = handler.getGame().getField().getMainPlayer().getCenterPosition().y*Block.BLOCKHEIGHT;
         }
         if(keycode==Input.Keys.R){
             cameraFollow = !cameraFollow;
@@ -60,7 +62,8 @@ public class ScreenMover extends InputAdapter {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         //Moves the camera in the same direction as the mouse to "drag the field"
         if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)){
-            handler.getGame().getCamera().translate(lastX - screenX, screenY-lastY);
+            OrthographicCamera camera = handler.getGame().getGameApplicationAdapter().getCamera();
+            camera.translate(lastX - screenX, screenY-lastY);
             lastX = screenX;
             lastY = screenY;
             //sets it so the camera will not follow the player anymore
