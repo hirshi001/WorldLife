@@ -7,6 +7,9 @@ import com.hirshi001.billions.gamepieces.entities.GameMob;
 import com.hirshi001.billions.registry.Block;
 import com.hirshi001.billions.registry.Registry;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 public class Bullet extends GameProjectile {
 
     public static final Texture t = new Texture("textures/entities/projectiles/bullet/bullet.png");
@@ -21,10 +24,11 @@ public class Bullet extends GameProjectile {
     public Bullet(Vector2 position, Vector2 dir) {
         super(position);
         this.angle = dir.nor().scl(speed);
+
     }
 
     @Override
-    public void updateBoxEntity() {
+    public void update() {
         getPosition().add(angle);
         life++;
         if(life>lifeSpan){

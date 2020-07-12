@@ -20,36 +20,86 @@ public class Game implements Disposable {
 
     public Game(){  }
 
+    /**
+     *
+     * @param application the GameApplicationAdapter which runs the game
+     * @return a reference to this object for chaining
+     */
     public Game setGameApplicationAdapter(GameApplicationAdapter application){
         this.application = application;
         return this;
     }
+
+    /**
+     *
+     * @return a reference to the GameApplicationAdapter
+     */
     public GameApplicationAdapter getGameApplicationAdapter(){
         return application;
     }
 
+    /**
+     *
+     * @param batch SpriteBatch used to draw sprites
+     * @return a reference to this object for chaining
+     */
     public Game setSpriteBatch(SpriteBatch batch){
         this.spriteBatch = batch;
         return this;
     }
+
+    /**
+     *
+     * @return the SpriteBatch used for drawing sprites
+     */
     public SpriteBatch getSpriteBatch(){return this.spriteBatch;}
-    public Game setField(Field f){
-        this.field = f;
+
+    /**
+     *
+     * @param field used for displaying the individual tiles, structures, and other entities in the game
+     * @return a reference to this object for chaining
+     */
+    public Game setField(Field field){
+        this.field = field;
         field.setGame(this);
         return this;
     }
+
+    /**
+     *
+     * @return the field that will next be displayed on the screen. This will remain true unless the Field in this Game
+     * object is changed after this method call. Changing the field can be done through the setField(Field field);
+     * method. If the behavior of the game object is changed however, it can be done through other means.
+     */
     public Field getField(){return field;}
+
+    /**
+     *
+     * @param handler which handles all inputs including key presses and mouse clicks.
+     * @return a reference to this object for chaining
+     */
     public Game setInputHandler(InputHandler handler){
         this.inputHandler = handler;
         return this;
     }
+
+    /**
+     *
+     * @return the InputHandler which handles all inputs including key presses and mouse clicks.
+     */
     public InputHandler getInputHandler(){return this.inputHandler;}
 
-
+    /**
+     * draws the current state of the game onto the screen. Usually, little to no changes in the state of the game
+     * should occur in this method. Changes in state should happen in the update method.
+     */
     public void draw(){
         field.draw(spriteBatch);
     }
 
+    /**
+     * updates the state of all objects which 
+     */
     public void update(){
         field.update();
         handleCameraPosition();

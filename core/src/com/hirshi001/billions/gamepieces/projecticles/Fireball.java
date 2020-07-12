@@ -24,7 +24,7 @@ public class Fireball extends GameProjectile {
     }
 
     @Override
-    public void updateBoxEntity() {
+    public void update() {
         getPosition().add(angle);
         life++;
         if(life>lifeSpan){
