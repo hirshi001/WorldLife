@@ -23,7 +23,6 @@ public class MainApp extends ApplicationAdapter{
 		/* Create OrthographicCamera*/
 		camera = new OrthographicCamera(size.width, size.height);
 
-
 		/*create spritebatch*/
 		batch = new SpriteBatch();
 
@@ -31,8 +30,6 @@ public class MainApp extends ApplicationAdapter{
 		gameApplication = new GameApplication();
 		gameApplication.setCamera(camera);
 		gameApplication.startup();
-
-
 
 	}
 
