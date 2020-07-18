@@ -110,6 +110,7 @@ public class Player extends GameMob {
 
     @Override
     public boolean onTouchingDoor(StructureTile tile) {
+        if(!tile.isDoor()) return false;
         if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
             if(tile.getStructure().hasInnerField()){
                 Field currentField = getField();

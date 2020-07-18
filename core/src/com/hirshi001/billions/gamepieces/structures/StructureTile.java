@@ -1,12 +1,18 @@
 package com.hirshi001.billions.gamepieces.structures;
 
+import com.hirshi001.billions.gamepieces.entities.GameMob;
+
 public class StructureTile {
+
+
 
     private boolean isStructure;
     private GameStructure structure;
 
     private boolean isCollidable;
     private boolean isDoor;
+
+    private EnterDoorEventListener enterDoorEventListener;
 
     public StructureTile() {
 
@@ -47,6 +53,14 @@ public class StructureTile {
 
     public boolean isDoor(){
         return isDoor;
+    }
+
+    public void onEnter(GameMob mob){
+        enterDoorEventListener.onEnteringDoor(mob);
+    }
+
+    public void setOnEnter(EnterDoorEventListener listener){
+        enterDoorEventListener = listener;
     }
 
     public StructureTile set(StructureTile s){

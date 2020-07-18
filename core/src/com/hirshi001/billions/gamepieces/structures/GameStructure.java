@@ -41,8 +41,8 @@ public abstract class GameStructure implements Positionable {
     }
     public abstract void drawStructure(SpriteBatch batch);
 
-    public static Integer[][] vFlip(Integer[][] tiles){
-        Integer[][] newT = new Integer[tiles.length][longestRow(tiles)];
+    public static <T> T[][] vFlip(T[][] tiles){
+        T[][] newT = (T[][])new Object[tiles.length][longestRow(tiles)];
         for(int i=0;i<tiles.length;i++){
             for(int j=0;j<tiles[i].length;j++){
                 newT[i][j] = tiles[tiles.length-1-i][j];

@@ -81,4 +81,10 @@ public class House extends GameStructure {
     public float getHeight() {
         return (float)t.getHeight()/Block.BLOCKHEIGHT;
     }
+
+
+
 }
+
+
+
