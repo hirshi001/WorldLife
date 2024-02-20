@@ -8,6 +8,7 @@ import com.hirshi001.billions.gamepieces.items.ItemEntity;
 import com.hirshi001.billions.gamepieces.projecticles.GameProjectile;
 import com.hirshi001.billions.gamepieces.structures.StructureTile;
 import com.hirshi001.billions.registry.Registry;
+import java.security.SecureRandom;
 
 import java.util.List;
 import java.util.Random;
@@ -208,7 +209,7 @@ public abstract class GameMob extends BoxEntity {
     }
 
     protected void onMobCollision(GameMob e) {
-        Random r = new Random();
+        Random r = new SecureRandom();
         if(e.getCenterPosition().equals(getCenterPosition())){
             getLastPosition().set(getPosition());
             getPosition().add( (r.nextBoolean()?-1:1)*0.00001f,(r.nextBoolean()?-1:1)*0.00001f);
